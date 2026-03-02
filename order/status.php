@@ -6,6 +6,7 @@ require_once __DIR__ . '/../includes/functions.php';
 
 $orderNumber = $_GET['order'] ?? '';
 $tableNumber = $_GET['table'] ?? '';
+$token = $_GET['token'] ?? '';
 ?>
 <!DOCTYPE html>
 <html lang="th">
@@ -40,7 +41,7 @@ $tableNumber = $_GET['table'] ?? '';
         </div>
 
         <div class="mt-4">
-            <a href="index.php?table=<?= e($tableNumber) ?>" class="btn btn-danger w-100 py-2">
+            <a href="index.php?table=<?= e($tableNumber) ?>&token=<?= e($token) ?>" class="btn btn-danger w-100 py-2">
                 <i class="bi bi-plus-lg"></i> สั่งเพิ่ม
             </a>
             <button class="btn btn-outline-secondary w-100 py-2 mt-2" id="cancelBtn" style="display:none;" onclick="cancelOrder()">
@@ -121,7 +122,7 @@ $tableNumber = $_GET['table'] ?? '';
             .then(data => {
                 if (data.success) {
                     alert('ยกเลิกออเดอร์เรียบร้อยแล้ว');
-                    window.location.href = 'index.php?table=<?= e($tableNumber) ?>';
+                    window.location.href = 'index.php?table=<?= e($tableNumber) ?>&token=<?= e($token) ?>';
                 } else {
                     alert(data.message || 'ไม่สามารถยกเลิกได้');
                     btn.disabled = false;
