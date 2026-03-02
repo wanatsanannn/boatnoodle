@@ -1,0 +1,45 @@
+<?php
+// ค่าคงที่ของระบบ
+define('SITE_NAME', 'ก๋วยเตี๋ยวเรือชาม');
+
+// URL หลักของเว็บไซต์ (เปลี่ยนเมื่อมีโดเมนจริง)
+define('BASE_URL', 'http://localhost/order');
+
+// เส้นทางไฟล์
+define('ROOT_PATH', dirname(__DIR__) . '/');
+define('UPLOAD_PATH', ROOT_PATH . 'assets/uploads/');
+define('MENU_IMG_PATH', UPLOAD_PATH . 'menu/');
+define('QR_PATH', UPLOAD_PATH . 'qrcodes/');
+
+// ขนาดไฟล์อัปโหลดสูงสุด (2MB)
+define('MAX_UPLOAD_SIZE', 2 * 1024 * 1024);
+
+// นามสกุลไฟล์ที่อนุญาต
+define('ALLOWED_EXTENSIONS', ['jpg', 'jpeg', 'png', 'webp']);
+
+// ระดับความเผ็ด
+define('SPICE_LEVELS', [
+    0 => 'ไม่เผ็ด',
+    1 => 'เผ็ดน้อย',
+    2 => 'เผ็ดกลาง',
+    3 => 'เผ็ดมาก',
+]);
+
+// สถานะออเดอร์
+define('ORDER_STATUSES', [
+    'pending'   => 'รอรับออเดอร์',
+    'cooking'   => 'กำลังเตรียมอาหาร',
+    'ready'     => 'พร้อมเสิร์ฟ',
+    'served'    => 'เสิร์ฟแล้ว',
+    'completed' => 'เสร็จสิ้น',
+    'cancelled' => 'ยกเลิก',
+]);
+
+// สิทธิ์ตาม role
+define('ROLE_NAMES', [
+    'admin'   => 'ผู้ดูแลระบบ',
+    'manager' => 'หัวหน้างาน',
+    'chef'    => 'พ่อครัว/แม่ครัว',
+    'waiter'  => 'พนักงานเสิร์ฟ',
+    'cashier' => 'แคชเชียร์',
+]);
