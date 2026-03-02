@@ -2,11 +2,20 @@
 // Timezone: ตั้งค่าให้ PHP และ MySQL ใช้เวลาตรงกัน
 date_default_timezone_set('Asia/Bangkok');
 
-// เชื่อมต่อฐานข้อมูล (PDO)
-$db_host = 'sql111.infinityfree.com';
-$db_name = 'if0_41288662_boat_noodle';
-$db_user = 'if0_41288662';
-$db_pass = 'oi3Hp1qVBPM';
+// ตรวจสอบว่ารันอยู่บนเครื่องตัวเอง (XAMPP) หรือบนโฮสติ้ง (InfinityFree)
+if ($_SERVER['HTTP_HOST'] == 'localhost' || $_SERVER['HTTP_HOST'] == '127.0.0.1') {
+    // ข้อมูลเชื่อมต่อตัวจำลอง XAMPP (Local)
+    $db_host = 'localhost';
+    $db_name = 'boat_noodle'; // เปลี่ยนจาก noodle_shop เป็น boat_noodle สำหรับ XAMPP
+    $db_user = 'root';
+    $db_pass = '';
+} else {
+    // ข้อมูลเชื่อมต่อโฮสติ้งฟรี (InfinityFree - Production)
+    $db_host = 'sql111.infinityfree.com';
+    $db_name = 'if0_41288662_boat_noodle';
+    $db_user = 'if0_41288662';
+    $db_pass = 'oi3Hp1qVBPM';
+}
 
 try {
     $pdo = new PDO(

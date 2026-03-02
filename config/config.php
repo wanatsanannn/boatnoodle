@@ -2,8 +2,15 @@
 // ค่าคงที่ของระบบ
 define('SITE_NAME', 'ก๋วยเตี๋ยวเรือชาม');
 
-// URL หลักของเว็บไซต์ (เปลี่ยนเมื่อมีโดเมนจริง)
-define('BASE_URL', 'http://localhost/order');
+// ตรวจสอบว่าเป็น Localhost หรือ Server จริง เพื่อกำหนด URL อัตโนมัติ
+$is_localhost = ($_SERVER['HTTP_HOST'] == 'localhost' || $_SERVER['HTTP_HOST'] == '127.0.0.1');
+
+if ($is_localhost) {
+    define('BASE_URL', 'http://localhost/ก๋วยเตี๋ยวเรือชาม');
+} else {
+    // โดเมนของ InfinityFree เช่น http://boatnoodle.infinityfreeapp.com
+    define('BASE_URL', 'http://' . $_SERVER['HTTP_HOST']);
+}
 
 // เส้นทางไฟล์
 define('ROOT_PATH', dirname(__DIR__) . '/');
