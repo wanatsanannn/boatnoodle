@@ -16,6 +16,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 
     if ($action === 'create_order') {
         $tableNum = $input['table'] ?? '';
+        $token = $input['token'] ?? '';
         $items = $input['items'] ?? [];
 
         if (!$tableNum || empty($items)) {
@@ -23,12 +24,16 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             exit;
         }
 
-        // ตรวจสอบโต๊ะ
-        $stmt = $pdo->prepare("SELECT id FROM tables WHERE table_number = ?");
+        // ตรวจสอบโต๊ะและโทเค็น
+        $stmt = $pdo->prepare("SELECT id, session_token FROM tables WHERE table_number = ?");
         $stmt->execute([$tableNum]);
         $table = $stmt->fetch();
         if (!$table) {
             echo json_encode(['success' => false, 'message' => 'ไม่พบโต๊ะ']);
+            exit;
+        }
+        if (empty($table['session_token']) || $token !== $table['session_token']) {
+            echo json_encode(['success' => false, 'message' => 'QR Code หมดอายุ กรุณาสแกนใหม่']);
             exit;
         }
 

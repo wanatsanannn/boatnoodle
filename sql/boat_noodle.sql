@@ -408,6 +408,7 @@ CREATE TABLE `tables` (
   `id` int(11) NOT NULL,
   `table_number` varchar(10) NOT NULL,
   `seats` int(11) NOT NULL DEFAULT 4,
+  `session_token` varchar(64) DEFAULT NULL,
   `qr_code` varchar(255) DEFAULT NULL,
   `status` enum('available','occupied') NOT NULL DEFAULT 'available',
   `created_at` timestamp NOT NULL DEFAULT current_timestamp()

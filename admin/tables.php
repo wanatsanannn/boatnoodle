@@ -82,11 +82,12 @@ require_once __DIR__ . '/../includes/header.php';
                             <td><?= statusBadge($t['status']) ?></td>
                             <td>
                                 <?php
-                                $orderUrl = BASE_URL . '/order/?table=' . $t['table_number'];
+                                $tokenStr = !empty($t['session_token']) ? '&token=' . $t['session_token'] : '';
+                                $orderUrl = BASE_URL . '/order/?table=' . $t['table_number'] . $tokenStr;
                                 $qrUrl = generateQRCodeURL($orderUrl);
                                 ?>
-                                <a href="<?= $qrUrl ?>" target="_blank" class="btn btn-sm btn-outline-dark btn-action">
-                                    <i class="bi bi-qr-code"></i> ดู QR
+                                <a href="<?= $qrUrl ?>" target="_blank" class="btn btn-sm btn-outline-dark btn-action" title="ดูคิวอาร์โค้ด">
+                                    <i class="bi bi-qr-code"></i>
                                 </a>
                                 <button class="btn btn-sm btn-outline-info btn-action"
                                         onclick="printQR('<?= e($t['table_number']) ?>', '<?= $qrUrl ?>')">
@@ -94,14 +95,22 @@ require_once __DIR__ . '/../includes/header.php';
                                 </button>
                             </td>
                             <td>
-                                <a href="tables.php?edit=<?= $t['id'] ?>" class="btn btn-sm btn-outline-primary btn-action">
+                                <a href="tables.php?edit=<?= $t['id'] ?>" class="btn btn-sm btn-outline-primary btn-action" title="แก้ไขโต๊ะ">
                                     <i class="bi bi-pencil"></i>
                                 </a>
-                                <form method="POST" action="table_action.php" class="d-inline">
+                                <form method="POST" action="table_action.php" class="d-inline" onsubmit="return confirm('ยืนยันระบบใหม่จะล้างคิวอาร์เดิมทิ้งทันที?');">
+                                    <?= csrfField() ?>
+                                    <input type="hidden" name="action" value="reset_token">
+                                    <input type="hidden" name="id" value="<?= $t['id'] ?>">
+                                    <button type="submit" class="btn btn-sm btn-outline-warning btn-action" title="สร้างคิวอาร์ใหม่">
+                                        <i class="bi bi-arrow-repeat"></i>
+                                    </button>
+                                </form>
+                                <form method="POST" action="table_action.php" class="d-inline" onsubmit="return confirm('แน่ใจที่จะลบโต๊ะนี้ใช่ไหม?');">
                                     <?= csrfField() ?>
                                     <input type="hidden" name="action" value="delete">
                                     <input type="hidden" name="id" value="<?= $t['id'] ?>">
-                                    <button class="btn btn-sm btn-outline-danger btn-action btn-delete">
+                                    <button class="btn btn-sm btn-outline-danger btn-action btn-delete" title="ลบโต๊ะ">
                                         <i class="bi bi-trash"></i>
                                     </button>
                                 </form>

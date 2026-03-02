@@ -3,6 +3,7 @@
 const Cart = {
     KEY: 'noodle_cart',
     TABLE_KEY: 'noodle_table',
+    TOKEN_KEY: 'noodle_token',
 
     // ดึงรายการทั้งหมด
     getItems() {
@@ -79,13 +80,20 @@ const Cart = {
         this.updateCartBar();
     },
 
-    // เก็บหมายเลขโต๊ะ
-    setTable(tableNum) {
+    // เก็บหมายเลขโต๊ะและเซสชั่น
+    setTable(tableNum, tokenStr = '') {
         localStorage.setItem(this.TABLE_KEY, tableNum);
+        if (tokenStr) {
+            localStorage.setItem(this.TOKEN_KEY, tokenStr);
+        }
     },
 
     getTable() {
         return localStorage.getItem(this.TABLE_KEY) || '';
+    },
+
+    getToken() {
+        return localStorage.getItem(this.TOKEN_KEY) || '';
     },
 
     // อัปเดต header cart icon + checkout bar

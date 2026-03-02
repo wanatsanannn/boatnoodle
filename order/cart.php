@@ -7,6 +7,18 @@ require_once __DIR__ . '/../config/config.php';
 require_once __DIR__ . '/../includes/functions.php';
 
 $tableNumber = $_GET['table'] ?? '';
+$token = $_GET['token'] ?? '';
+
+// ตรวจสอบโต๊ะและโทเค็น
+$stmt = $pdo->prepare("SELECT * FROM tables WHERE table_number = ?");
+$stmt->execute([$tableNumber]);
+$table = $stmt->fetch();
+if (!$table || empty($table['session_token']) || $token !== $table['session_token']) {
+    die('<div style="text-align:center;padding:3rem;font-family:Sarabun,sans-serif;">
+            <h2>&#10060; สิทธิ์การเข้าถึงหมดอายุ</h2>
+            <p>กรุณากลับไปสแกน QR Code ที่โต๊ะใหม่อีกครั้ง</p>
+         </div>');
+}
 ?>
 <!DOCTYPE html>
 <html lang="th">
@@ -25,7 +37,7 @@ $tableNumber = $_GET['table'] ?? '';
     <!-- Header -->
     <div class="shop-header" style="padding:1.25rem 1.1rem; border-radius: 0 0 16px 16px; box-shadow: 0 4px 12px rgba(230,57,70,0.15);">
         <div style="display:flex;align-items:center;gap:0.4rem;margin-bottom:0.8rem;">
-            <a href="index.php?table=<?= e($tableNumber) ?>" style="color:#fff;text-decoration:none;font-size:1.5rem;display:flex;align-items:center;">
+            <a href="index.php?table=<?= e($tableNumber) ?>&token=<?= e($token) ?>" style="color:#fff;text-decoration:none;font-size:1.5rem;display:flex;align-items:center;">
                 <i class="bi bi-chevron-left" style="-webkit-text-stroke: 1px;"></i>
             </a>
             <h1 style="font-size:1.5rem;font-weight:700;margin:0;color:#fff;">ตะกร้าสินค้า</h1>
@@ -48,7 +60,7 @@ $tableNumber = $_GET['table'] ?? '';
             </div>
             <h3 style="color: var(--text-main); font-weight: 700; font-size: 1.25rem; margin-bottom: 0.5rem;">ตะกร้ายังว่างอยู่เลย...</h3>
             <p style="color: var(--text-muted); font-size: 0.95rem; margin-bottom: 3rem; line-height: 1.5;">มาเติมความอร่อยด้วยเมนูเด็ดของร้านเรา<br>กันเถอะ</p>
-            <a href="index.php?table=<?= e($tableNumber) ?>" class="btn-cart-solid text-decoration-none" style="width: 100%; max-width: 320px; padding: 1rem; font-size: 1.05rem; border-radius: var(--radius-pill); box-shadow: 0 4px 12px rgba(230, 57, 70, 0.25);">
+            <a href="index.php?table=<?= e($tableNumber) ?>&token=<?= e($token) ?>" class="btn-cart-solid text-decoration-none" style="width: 100%; max-width: 320px; padding: 1rem; font-size: 1.05rem; border-radius: var(--radius-pill); box-shadow: 0 4px 12px rgba(230, 57, 70, 0.25);">
                 เลือกดูเมนูอาหาร
             </a>
         </div>
@@ -59,7 +71,7 @@ $tableNumber = $_GET['table'] ?? '';
         </div>
 
         <div class="wf-actions" id="cartActions" style="display:none;">
-            <a href="index.php?table=<?= e($tableNumber) ?>" class="wf-btn">
+            <a href="index.php?table=<?= e($tableNumber) ?>&token=<?= e($token) ?>" class="wf-btn">
                 + สั่งเพิ่ม
             </a>
             <button class="wf-btn" id="confirmBtn" onclick="submitOrder()">
@@ -159,6 +171,7 @@ $tableNumber = $_GET['table'] ?? '';
                 body: JSON.stringify({
                     action: 'create_order',
                     table: '<?= e($tableNumber) ?>',
+                    token: '<?= e($token) ?>',
                     items: items
                 })
             })
@@ -166,7 +179,7 @@ $tableNumber = $_GET['table'] ?? '';
             .then(data => {
                 if (data.success) {
                     Cart.clear();
-                    window.location.href = 'status.php?order=' + data.order_number + '&table=<?= e($tableNumber) ?>';
+                    window.location.href = 'status.php?order=' + data.order_number + '&table=<?= e($tableNumber) ?>&token=<?= e($token) ?>';
                 } else {
                     alert(data.message || 'เกิดข้อผิดพลาด');
                     btn.disabled = false;

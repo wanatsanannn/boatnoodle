@@ -26,6 +26,14 @@ if (!$table) {
          </div>');
 }
 
+$token = $_GET['token'] ?? '';
+if (empty($table['session_token']) || $token !== $table['session_token']) {
+    die('<div style="text-align:center;padding:3rem;font-family:Sarabun,sans-serif;">
+            <h2>&#10060; QR Code หมดอายุ</h2>
+            <p>เซสชั่นสำหรับโต๊ะนี้ถูกยกเลิกแล้ว กรุณาแจ้งพนักงานเพื่อสแกน QR Code ใหม่</p>
+         </div>');
+}
+
 // ดึงหมวดหมู่
 $categories = $pdo->query("SELECT * FROM categories WHERE status = 'active' ORDER BY sort_order")->fetchAll();
 
@@ -98,7 +106,7 @@ unset($groups);
                 <img src="../assets/images/logo.png" alt="Logo">
                 <h1><?= SITE_NAME ?></h1>
             </div>
-            <a href="cart.php?table=<?= e($tableNumber) ?>" class="header-cart-icon" id="headerCart">
+            <a href="cart.php?table=<?= e($tableNumber) ?>&token=<?= e($token) ?>" class="header-cart-icon" id="headerCart">
                 <i class="bi bi-cart3"></i>
                 <span class="header-cart-badge" id="headerCartBadge">0</span>
             </a>
@@ -167,7 +175,7 @@ unset($groups);
     </div>
 
     <!-- Checkout Bar -->
-    <div class="checkout-bar" id="checkoutBar" onclick="window.location.href='cart.php?table=<?= e($tableNumber) ?>'">
+    <div class="checkout-bar" id="checkoutBar" onclick="window.location.href='cart.php?table=<?= e($tableNumber) ?>&token=<?= e($token) ?>'">
         <div class="checkout-left">
             <i class="bi bi-cart-check-fill"></i>
             <span class="checkout-count" id="checkoutCount">0</span> รายการ
@@ -261,8 +269,8 @@ unset($groups);
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
     <script src="../assets/js/cart.js"></script>
     <script>
-        // เก็บหมายเลขโต๊ะ
-        Cart.setTable('<?= e($tableNumber) ?>');
+        // เก็บหมายเลขโต๊ะ และเซสชั่น
+        Cart.setTable('<?= e($tableNumber) ?>', '<?= e($token) ?>');
 
         let currentItem = null;
         let selectedSize = 'normal';
