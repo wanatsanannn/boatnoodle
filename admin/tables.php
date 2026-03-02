@@ -82,7 +82,7 @@ require_once __DIR__ . '/../includes/header.php';
                             <td><?= statusBadge($t['status']) ?></td>
                             <td>
                                 <?php
-                                $orderUrl = BASE_URL . '/?table=' . $t['table_number'];
+                                $orderUrl = BASE_URL . '/order/?table=' . $t['table_number'];
                                 $qrUrl = generateQRCodeURL($orderUrl);
                                 ?>
                                 <a href="<?= $qrUrl ?>" target="_blank" class="btn btn-sm btn-outline-dark btn-action">
