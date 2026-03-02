@@ -3,10 +3,10 @@
 date_default_timezone_set('Asia/Bangkok');
 
 // เชื่อมต่อฐานข้อมูล (PDO)
-$db_host = 'localhost';
-$db_name = 'noodle_shop';
-$db_user = 'root';
-$db_pass = '';
+$db_host = 'sql111.infinityfree.com';
+$db_name = 'if0_41288662_boat_noodle';
+$db_user = 'if0_41288662';
+$db_pass = 'oi3Hp1qVBPM';
 
 try {
     $pdo = new PDO(
