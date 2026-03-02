@@ -127,6 +127,66 @@ require_once __DIR__ . '/../includes/header.php';
     background: #e74c3c;
     color: white;
 }
+
+/* Responsive Adjustments */
+@media (max-width: 992px) {
+    .grid-left {
+        grid-template-columns: repeat(5, 80px);
+        grid-template-rows: repeat(5, 55px);
+        gap: 15px;
+    }
+    .t-normal {
+        width: 80px;
+        height: 55px;
+    }
+    .t-vertical {
+        width: 60px;
+        height: 100px;
+    }
+    .column-right {
+        gap: 15px;
+    }
+    .t-node {
+        font-size: 1rem;
+    }
+    .t-btn-act {
+        font-size: 0.75rem;
+        padding: 2px 6px;
+    }
+}
+
+@media (max-width: 768px) {
+    .map-container {
+        flex-direction: column;
+        align-items: center;
+    }
+    .grid-left {
+        grid-template-columns: repeat(5, 60px);
+        grid-template-rows: repeat(5, 45px);
+        gap: 10px;
+    }
+    .t-normal {
+        width: 60px;
+        height: 45px;
+    }
+    .t-vertical {
+        width: 80px;
+        height: 50px;
+    }
+    /* Switch vertical tables to a horizontal layout beneath the main grid */
+    .column-right {
+        flex-direction: row;
+        gap: 10px;
+    }
+    .t-node {
+        font-size: 0.9rem;
+    }
+    .t-btn-act {
+        font-size: 0.7rem;
+        padding: 2px 4px;
+        width: 90% !important;
+    }
+}
 </style>
 
 <div class="d-flex justify-content-between align-items-center mb-4">
