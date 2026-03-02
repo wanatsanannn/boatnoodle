@@ -189,7 +189,7 @@ function renderMapTable($tableNumber, $tableMap, $cssClass) {
     $qrUrl = generateQRCodeURL($orderUrl);
     ?>
     
-    <div class="t-node <?= $cssClass ?> <?= $statusClass ?>">
+    <div class="t-node <?= $cssClass ?> <?= $statusClass ?>" id="table-node-<?= htmlspecialchars($t['table_number']) ?>">
         <span><?= htmlspecialchars($t['table_number']) ?></span>
         
         <!-- Hover Overlay -->
@@ -234,6 +234,36 @@ function printQR(tableNum, qrUrl) {
     `);
     w.document.close();
 }
+
+// ระบบอัปเดตสถานะอัตโนมัติ (ทุก 5 วินาที)
+function refreshTables() {
+    fetch('../api/tables_status.php')
+        .then(r => r.json())
+        .then(data => {
+            if (data.success) {
+                data.tables.forEach(t => {
+                    const el = document.getElementById('table-node-' + t.table_number);
+                    if (el) {
+                        const overlay = el.querySelector('.t-overlay');
+                        if (t.status === 'occupied') {
+                            el.classList.remove('status-available');
+                            el.classList.add('status-occupied');
+                            overlay.innerHTML = `<a href="payment.php?table=${t.id}" class="t-btn-act text-decoration-none text-center d-block w-75">เช็คบิล</a>`;
+                        } else {
+                            el.classList.remove('status-occupied');
+                            el.classList.add('status-available');
+                            const tokenStr = t.session_token ? '&token=' + t.session_token : '';
+                            const orderUrl = '<?= BASE_URL ?>/order/?table=' + encodeURIComponent(t.table_number) + tokenStr;
+                            const qrImageUrl = 'https://chart.googleapis.com/chart?chs=500x500&cht=qr&chl=' + encodeURIComponent(orderUrl);
+                            overlay.innerHTML = `<button onclick="printQR('${t.table_number}', '${qrImageUrl}')" class="t-btn-act w-75">ดู QR โค้ด</button>`;
+                        }
+                    }
+                });
+            }
+        });
+}
+
+setInterval(refreshTables, 5000);
 </script>
 
 <?php require_once __DIR__ . '/../includes/footer.php'; ?>
