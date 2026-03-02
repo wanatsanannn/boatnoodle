@@ -68,11 +68,30 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['pay'])) {
         $pdo->prepare("UPDATE orders SET status = 'completed' WHERE table_id = ? AND status IN ('pending','cooking','ready','served')")
             ->execute([$tableId]);
 
-        // อัปเดตโต๊ะเป็นว่าง
-        $pdo->prepare("UPDATE tables SET status = 'available' WHERE id = ?")->execute([$tableId]);
+        // อัปเดตโต๊ะเป็นว่าง และสร้าง token ใหม่เพื่อล้าง QR Code เดิม
+        $newToken = bin2hex(random_bytes(16));
+        $pdo->prepare("UPDATE tables SET status = 'available', session_token = ? WHERE id = ?")->execute([$newToken, $tableId]);
 
         $pdo->commit();
         setFlash('success', 'บันทึกการชำระเงินสำเร็จ — โต๊ะ ' . $selectedTable['table_number']);
+        redirect('payment.php');
+    } catch (Exception $e) {
+        $pdo->rollBack();
+        setFlash('danger', 'เกิดข้อผิดพลาด: ' . $e->getMessage());
+    }
+}
+
+// จัดการกรณีเคลียร์โต๊ะ(ไม่มีออเดอร์หรือออเดอร์ถูกยกเลิกหมด)
+if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['clear_table'])) {
+    verifyCSRF();
+    $tableId = (int)$_POST['table_id'];
+
+    try {
+        $pdo->beginTransaction();
+        $newToken = bin2hex(random_bytes(16));
+        $pdo->prepare("UPDATE tables SET status = 'available', session_token = ? WHERE id = ?")->execute([$newToken, $tableId]);
+        $pdo->commit();
+        setFlash('success', 'เคลียร์โต๊ะเรียบร้อยแล้ว');
         redirect('payment.php');
     } catch (Exception $e) {
         $pdo->rollBack();
@@ -164,8 +183,16 @@ require_once __DIR__ . '/../includes/header.php';
             </div>
         <?php elseif ($selectedTable): ?>
             <div class="card">
-                <div class="card-body text-center text-muted py-5">
-                    ไม่มีออเดอร์ค้างสำหรับโต๊ะนี้
+                <div class="card-body text-center py-5">
+                    <p class="text-muted mb-4">ไม่มีออเดอร์ค้างสำหรับโต๊ะนี้ (หรือออเดอร์ถูกยกเลิกทั้งหมด)</p>
+                    <form method="POST">
+                        <?= csrfField() ?>
+                        <input type="hidden" name="table_id" value="<?= $selectedTable['id'] ?>">
+                        <button type="submit" name="clear_table" value="1" class="btn btn-warning"
+                                onclick="return confirm('ยืนยันเคลียร์โต๊ะให้ว่างและรีเซ็ตรหัส QR Code ?')">
+                            <i class="bi bi-eraser-fill"></i> เคลียร์โต๊ะให้ว่าง
+                        </button>
+                    </form>
                 </div>
             </div>
         <?php else: ?>

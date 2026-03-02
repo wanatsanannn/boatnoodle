@@ -50,7 +50,12 @@ $currentPage = basename($_SERVER['PHP_SELF'], '.php');
                         </li>
                         <li class="nav-item">
                             <a class="nav-link <?= $currentPage === 'tables' ? 'active' : '' ?>" href="../admin/tables.php">
-                                <i class="bi bi-grid-3x3"></i> โต๊ะ
+                                <i class="bi bi-grid-3x3"></i> จัดการโต๊ะ
+                            </a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link <?= $currentPage === 'table_map' ? 'active' : '' ?>" href="../staff/table_map.php">
+                                <i class="bi bi-map"></i> แผนผังโต๊ะ
                             </a>
                         </li>
                         <li class="nav-item">
@@ -96,7 +101,12 @@ $currentPage = basename($_SERVER['PHP_SELF'], '.php');
 
                     <?php if ($user['role'] === 'cashier'): ?>
                         <li class="nav-item">
-                            <a class="nav-link active" href="../staff/payment.php">
+                            <a class="nav-link <?= $currentPage === 'table_map' ? 'active' : '' ?>" href="../staff/table_map.php">
+                                <i class="bi bi-map"></i> แผนผังโต๊ะ
+                            </a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link <?= $currentPage === 'payment' ? 'active' : '' ?>" href="../staff/payment.php">
                                 <i class="bi bi-cash-stack"></i> ชำระเงิน
                             </a>
                         </li>
