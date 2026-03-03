@@ -33,7 +33,7 @@ if (!$payment) {
 $stmt = $pdo->prepare("
     SELECT o.*, 
         GROUP_CONCAT(
-            CONCAT(oi.quantity, '× ', m.name, ' (', IF(oi.size='special','พิเศษ','ธรรมดา'), ')',
+            CONCAT(oi.quantity, '× ', m.name, IF(oi.size='special',' (พิเศษ)',''),
                 COALESCE((SELECT CONCAT(' [', GROUP_CONCAT(oio.option_name SEPARATOR ', '), ']') FROM order_item_options oio WHERE oio.order_item_id = oi.id), ''),
                 '|', FORMAT(oi.subtotal, 2))
             SEPARATOR '||'
