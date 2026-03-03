@@ -66,10 +66,10 @@ body {
 }
 
 .header-left img {
-    height: 70px;
-    width: 70px;
-    max-height: 70px;
-    max-width: 70px;
+    height: 85px;
+    width: 85px;
+    max-height: 85px;
+    max-width: 85px;
     object-fit: contain;
     border-radius: 6px;
     flex-shrink: 0;
