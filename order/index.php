@@ -585,7 +585,7 @@ unset($groups);
                             `).join('')}
                         </div>
                         ${order.status === 'pending' ? `
-                            <div style="margin-top: 1rem; text-align: right;">
+                            <div style="margin-top: 1rem; text-align: center;">
                                 <button type="button" class="btn btn-outline-secondary btn-sm" onclick="cancelOrderModal('${order.order_number}', this)">
                                     <i class="bi bi-x-circle"></i> ยกเลิกออเดอร์
                                 </button>
