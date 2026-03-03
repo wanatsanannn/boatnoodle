@@ -2,6 +2,15 @@
 // ส่วนหัวของหน้าเว็บ (ส่วน admin/staff)
 $user = currentUser();
 $currentPage = basename($_SERVER['PHP_SELF'], '.php');
+
+$homeUrl = '../admin/index.php'; // Default for admin/manager
+if ($user['role'] === 'chef') {
+    $homeUrl = '../kitchen/index.php';
+} elseif ($user['role'] === 'waiter') {
+    $homeUrl = '../staff/index.php';
+} elseif ($user['role'] === 'cashier') {
+    $homeUrl = '../staff/table_map.php';
+}
 ?>
 <!DOCTYPE html>
 <html lang="th">
@@ -22,7 +31,7 @@ $currentPage = basename($_SERVER['PHP_SELF'], '.php');
 <body>
     <nav class="navbar navbar-expand-lg navbar-dark bg-danger">
         <div class="container-fluid">
-            <a class="navbar-brand fw-bold" href="../admin/index.php">
+            <a class="navbar-brand fw-bold" href="<?= $homeUrl ?>">
                 <img src="../assets/images/logo.png" alt="Logo" height="32" class="me-2">
                 <?= e(SITE_NAME) ?>
             </a>
@@ -61,6 +70,11 @@ $currentPage = basename($_SERVER['PHP_SELF'], '.php');
                         <li class="nav-item">
                             <a class="nav-link <?= $currentPage === 'orders' ? 'active' : '' ?>" href="../admin/orders.php">
                                 <i class="bi bi-receipt"></i> ออเดอร์
+                            </a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link <?= $currentPage === 'receipts' ? 'active' : '' ?>" href="../staff/receipts.php">
+                                <i class="bi bi-receipt-cutoff"></i> ประวัติใบเสร็จ
                             </a>
                         </li>
                         <li class="nav-item dropdown">
@@ -108,6 +122,11 @@ $currentPage = basename($_SERVER['PHP_SELF'], '.php');
                         <li class="nav-item">
                             <a class="nav-link <?= $currentPage === 'payment' ? 'active' : '' ?>" href="../staff/payment.php">
                                 <i class="bi bi-cash-stack"></i> ชำระเงิน
+                            </a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link <?= $currentPage === 'receipts' ? 'active' : '' ?>" href="../staff/receipts.php">
+                                <i class="bi bi-receipt-cutoff"></i> ประวัติใบเสร็จ
                             </a>
                         </li>
                     <?php endif; ?>
