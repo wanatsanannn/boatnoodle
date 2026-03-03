@@ -32,7 +32,7 @@ if ($user['role'] === 'chef') {
     <nav class="navbar navbar-expand-lg navbar-dark bg-danger">
         <div class="container-fluid">
             <a class="navbar-brand fw-bold" href="<?= $homeUrl ?>">
-                <img src="../assets/images/logo.png" alt="Logo" height="32" class="me-2">
+                <img src="../assets/images/logo.png" alt="Logo" height="48" class="me-2">
                 <?= e(SITE_NAME) ?>
             </a>
             <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navMain">
