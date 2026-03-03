@@ -833,7 +833,7 @@ body {
     justify-content: flex-start;
     align-items: flex-start;
     padding: 1.25rem 0;
-    border-bottom: 2px dashed #f0f0f0;
+    border-bottom: 2px solid #f0f0f0;
     gap: 1rem;
 }
 
