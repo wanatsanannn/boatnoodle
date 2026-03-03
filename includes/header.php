@@ -57,15 +57,15 @@ if ($user['role'] === 'chef') {
                                 <li><a class="dropdown-item" href="../admin/options.php">ตัวเลือกเสริม</a></li>
                             </ul>
                         </li>
-                        <li class="nav-item">
-                            <a class="nav-link <?= $currentPage === 'tables' ? 'active' : '' ?>" href="../admin/tables.php">
+                        <li class="nav-item dropdown">
+                            <a class="nav-link dropdown-toggle <?= in_array($currentPage, ['tables', 'table_map']) ? 'active' : '' ?>"
+                                href="#" data-bs-toggle="dropdown">
                                 <i class="bi bi-grid-3x3"></i> จัดการโต๊ะ
                             </a>
-                        </li>
-                        <li class="nav-item">
-                            <a class="nav-link <?= $currentPage === 'table_map' ? 'active' : '' ?>" href="../staff/table_map.php">
-                                <i class="bi bi-map"></i> แผนผังโต๊ะ
-                            </a>
+                            <ul class="dropdown-menu">
+                                <li><a class="dropdown-item" href="../admin/tables.php">จัดการข้อมูลโต๊ะ</a></li>
+                                <li><a class="dropdown-item" href="../staff/table_map.php">แผนผังโต๊ะ</a></li>
+                            </ul>
                         </li>
                         <li class="nav-item">
                             <a class="nav-link <?= $currentPage === 'orders' ? 'active' : '' ?>" href="../admin/orders.php">
