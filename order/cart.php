@@ -71,11 +71,11 @@ if (!$table || empty($table['session_token']) || $token !== $table['session_toke
         </div>
 
         <div class="wf-actions" id="cartActions" style="display:none;">
-            <a href="index.php?table=<?= e($tableNumber) ?>&token=<?= e($token) ?>" class="wf-btn">
+            <a href="index.php?table=<?= e($tableNumber) ?>&token=<?= e($token) ?>" class="wf-btn wf-btn-outline" style="color: #6c757d; border-color: #ced4da;">
                 + สั่งเพิ่ม
             </a>
-            <button class="wf-btn" id="confirmBtn" onclick="submitOrder()">
-                ยืนยันสั่งอาหาร
+            <button class="wf-btn wf-btn-solid" id="confirmBtn" onclick="submitOrder()" style="background-color: #df353f;">
+                <i class="bi bi-check-circle" style="margin-right:0.4rem;"></i> ยืนยันสั่งอาหาร
             </button>
         </div>
     </div>
@@ -144,7 +144,7 @@ if (!$table || empty($table['session_token']) || $token !== $table['session_toke
                 </div>
             `}).join('');
 
-            totalEl.innerHTML = 'รวมทั้งหมด : ฿' + Cart.getTotal().toFixed(2);
+            totalEl.innerHTML = `<span style="font-weight:600; font-size:1.2rem; color:#1e3a5f; margin-right:4px;">รวมทั้งหมด:</span> <span class="total-amount" style="font-size:1.5rem; font-weight:800; color:#1e3a5f;">฿${Cart.getTotal().toFixed(2)}</span>`;
         }
 
         function updateQty(idx, qty) {
