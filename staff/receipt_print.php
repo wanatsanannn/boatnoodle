@@ -99,7 +99,7 @@ $orders = $stmt->fetchAll();
 
     <table class="mb-2">
         <tr>
-            <td>บิลเลขที่:</td>
+            <td>Order ID:</td>
             <td class="text-right"><?= str_pad($payment['id'], 6, '0', STR_PAD_LEFT) ?></td>
         </tr>
         <tr>

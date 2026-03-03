@@ -22,9 +22,15 @@ $token = $_GET['token'] ?? '';
 </head>
 <body class="customer-body">
 
-    <div class="shop-header">
-        <h1><?= SITE_NAME ?></h1>
-        <div class="table-badge">📍 โต๊ะ <?= e($tableNumber) ?></div>
+    <div class="shop-header" style="padding:1.25rem 1.1rem; border-radius: 0 0 16px 16px; box-shadow: 0 4px 12px rgba(230,57,70,0.15);">
+        <div style="display:flex;align-items:center;justify-content:center;position:relative;margin-bottom:0.8rem;">
+            <h1 style="font-size:1.5rem;font-weight:700;margin:0;color:#fff;line-height:1.5rem;"><?= SITE_NAME ?></h1>
+        </div>
+        <div>
+            <div class="table-badge" style="display:inline-block; font-weight:600; padding:0.25rem 0.8rem; font-size:0.95rem;">
+                📍 โต๊ะ <?= e($tableNumber) ?>
+            </div>
+        </div>
     </div>
 
     <div class="px-3 py-3">
