@@ -54,8 +54,8 @@ if (!$table || empty($table['session_token']) || $token !== $table['session_toke
             <!-- Rendered by JS -->
         </div>
 
-        <div id="emptyCart" style="display:none;text-align:center;padding:2rem 1rem;min-height:70vh;display:flex;flex-direction:column;justify-content:center;align-items:center;">
-            <div style="width: 160px; height: 160px; background-color: #fff1f2; border-radius: 50%; display: flex; align-items: center; justify-content: center; margin-bottom: 2rem;">
+        <div id="emptyCart" style="display:none;text-align:center;padding:2rem 1rem;min-height:70vh;display:flex;flex-direction:column;justify-content:center;align-items:center;width:100%;">
+            <div style="width: 160px; height: 160px; background-color: #fff1f2; border-radius: 50%; display: flex; align-items: center; justify-content: center; margin: 0 auto 2rem auto;">
                 <i class="bi bi-cart3" style="font-size: 5rem; color: #e63946; opacity: 0.9;"></i>
             </div>
             <h3 style="color: #333; font-weight: 700; font-size: 1.25rem; margin-bottom: 0.5rem;">ตะกร้ายังว่างอยู่เลย...</h3>
