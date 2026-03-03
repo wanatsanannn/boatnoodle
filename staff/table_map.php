@@ -1,5 +1,5 @@
 <?php
-$pageTitle = 'แผนผังโต๊ะ (Cashier Map)';
+$pageTitle = 'แผนผังโต๊ะ';
 require_once __DIR__ . '/../config/db.php';
 require_once __DIR__ . '/../config/config.php';
 require_once __DIR__ . '/../includes/functions.php';
@@ -190,7 +190,7 @@ require_once __DIR__ . '/../includes/header.php';
 </style>
 
 <div class="d-flex justify-content-between align-items-center mb-4">
-    <h4><i class="bi bi-map"></i> แผนผังโต๊ะ (Cashier Map)</h4>
+    <h4><i class="bi bi-map"></i> แผนผังโต๊ะ </h4>
     <div>
         <span class="badge bg-success ms-2 rounded-pill px-3 py-2" style="font-size: 1rem;"><i class="bi bi-circle-fill"></i> ว่าง</span>
         <span class="badge bg-danger ms-2 rounded-pill px-3 py-2" style="font-size: 1rem;"><i class="bi bi-circle-fill"></i> ไม่ว่าง</span>

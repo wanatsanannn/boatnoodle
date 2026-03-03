@@ -111,7 +111,7 @@ $orders = $stmt->fetchAll();
             <td class="text-right"><?= e($payment['table_number'] ?? '-') ?></td>
         </tr>
         <tr>
-            <td>พนักงาน :</td>
+            <td>พนักงาน:</td>
             <td class="text-right"><?= e($payment['cashier_name']) ?></td>
         </tr>
     </table>

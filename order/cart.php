@@ -36,11 +36,11 @@ if (!$table || empty($table['session_token']) || $token !== $table['session_toke
 
     <!-- Header -->
     <div class="shop-header" style="padding:1.25rem 1.1rem; border-radius: 0 0 16px 16px; box-shadow: 0 4px 12px rgba(230,57,70,0.15);">
-        <div style="display:flex;align-items:center;gap:0.4rem;margin-bottom:0.8rem;">
-            <a href="index.php?table=<?= e($tableNumber) ?>&token=<?= e($token) ?>" style="color:#fff;text-decoration:none;font-size:1.5rem;display:flex;align-items:center;">
+        <div style="display:flex;align-items:center;justify-content:center;position:relative;margin-bottom:0.8rem;">
+            <a href="index.php?table=<?= e($tableNumber) ?>&token=<?= e($token) ?>" style="color:#fff;text-decoration:none;font-size:1.5rem;display:flex;align-items:center;position:absolute;left:0;">
                 <i class="bi bi-chevron-left" style="-webkit-text-stroke: 1px;"></i>
             </a>
-            <h1 style="font-size:1.5rem;font-weight:700;margin:0;color:#fff;">ตะกร้าสินค้า</h1>
+            <h1 style="font-size:1.5rem;font-weight:700;margin:0;color:#fff;line-height:1.5rem;">ตะกร้าสินค้า</h1>
         </div>
         <div>
             <div class="table-badge" style="display:inline-block; font-weight:600; padding:0.25rem 0.8rem; font-size:0.95rem;">
@@ -54,13 +54,13 @@ if (!$table || empty($table['session_token']) || $token !== $table['session_toke
             <!-- Rendered by JS -->
         </div>
 
-        <div id="emptyCart" style="display:none;text-align:center;padding:12vh 1rem;min-height:70vh;display:flex;flex-direction:column;justify-content:center;align-items:center;">
+        <div id="emptyCart" style="display:none;text-align:center;padding:2rem 1rem;min-height:70vh;display:flex;flex-direction:column;justify-content:center;align-items:center;">
             <div style="width: 160px; height: 160px; background-color: #fff1f2; border-radius: 50%; display: flex; align-items: center; justify-content: center; margin-bottom: 2rem;">
-                <i class="bi bi-cart3" style="font-size: 5rem; color: var(--primary-color); opacity: 0.9;"></i>
+                <i class="bi bi-cart3" style="font-size: 5rem; color: #e63946; opacity: 0.9;"></i>
             </div>
-            <h3 style="color: var(--text-main); font-weight: 700; font-size: 1.25rem; margin-bottom: 0.5rem;">ตะกร้ายังว่างอยู่เลย...</h3>
-            <p style="color: var(--text-muted); font-size: 0.95rem; margin-bottom: 3rem; line-height: 1.5;">มาเติมความอร่อยด้วยเมนูเด็ดของร้านเรา<br>กันเถอะ</p>
-            <a href="index.php?table=<?= e($tableNumber) ?>&token=<?= e($token) ?>" class="btn-cart-solid text-decoration-none" style="width: 100%; max-width: 320px; padding: 1rem; font-size: 1.05rem; border-radius: var(--radius-pill); box-shadow: 0 4px 12px rgba(230, 57, 70, 0.25);">
+            <h3 style="color: #333; font-weight: 700; font-size: 1.25rem; margin-bottom: 0.5rem;">ตะกร้ายังว่างอยู่เลย...</h3>
+            <p style="color: #666; font-size: 0.95rem; margin-bottom: 3rem; line-height: 1.5;">มาเติมความอร่อยด้วยเมนูเด็ดของร้านเรา<br>กันเถอะ</p>
+            <a href="index.php?table=<?= e($tableNumber) ?>&token=<?= e($token) ?>" class="text-decoration-none" style="display:inline-block;width:100%;max-width:320px;padding:1rem;font-size:1.1rem;font-weight:600;border-radius:50px;background-color:#e63946;color:#ffffff;box-shadow:0 4px 12px rgba(230,57,70,0.3);text-align:center;">
                 เลือกดูเมนูอาหาร
             </a>
         </div>
