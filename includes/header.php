@@ -72,19 +72,15 @@ if ($user['role'] === 'chef') {
                                 <i class="bi bi-receipt"></i> ออเดอร์
                             </a>
                         </li>
-                        <li class="nav-item">
-                            <a class="nav-link <?= $currentPage === 'receipts' ? 'active' : '' ?>" href="../staff/receipts.php">
-                                <i class="bi bi-receipt-cutoff"></i> ประวัติใบเสร็จ
-                            </a>
-                        </li>
                         <li class="nav-item dropdown">
-                            <a class="nav-link dropdown-toggle <?= str_contains($currentPage, 'report') ? 'active' : '' ?>"
+                            <a class="nav-link dropdown-toggle <?= (str_contains($currentPage, 'report') || $currentPage === 'receipts') ? 'active' : '' ?>"
                                 href="#" data-bs-toggle="dropdown">
                                 <i class="bi bi-graph-up"></i> รายงาน
                             </a>
                             <ul class="dropdown-menu">
                                 <li><a class="dropdown-item" href="../admin/reports_sales.php">ยอดขาย</a></li>
                                 <li><a class="dropdown-item" href="../admin/reports_popular.php">เมนูขายดี</a></li>
+                                <li><a class="dropdown-item" href="../staff/receipts.php">ประวัติใบเสร็จ</a></li>
                             </ul>
                         </li>
                     <?php endif; ?>
