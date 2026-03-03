@@ -584,9 +584,49 @@ unset($groups);
                                 </span>
                             `).join('')}
                         </div>
+                        ${order.status === 'pending' ? `
+                            <div style="margin-top: 1rem; text-align: right;">
+                                <button type="button" class="btn btn-outline-secondary btn-sm" onclick="cancelOrderModal('${order.order_number}', this)">
+                                    <i class="bi bi-x-circle"></i> ยกเลิกออเดอร์
+                                </button>
+                            </div>
+                        ` : ''}
                     </div>
                 `;
             }).join('');
+        }
+
+        function cancelOrderModal(orderNumber, btn) {
+            if (!confirm('คุณต้องการยกเลิกออเดอร์ #' + orderNumber + ' นี้หรือไม่?')) return;
+
+            btn.disabled = true;
+            const originalText = btn.innerHTML;
+            btn.innerHTML = '<span class="spinner-border spinner-border-sm"></span> กำลังยกเลิก...';
+
+            fetch('api.php', {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({
+                    action: 'cancel_order',
+                    order_number: orderNumber
+                })
+            })
+            .then(r => r.json())
+            .then(data => {
+                if (data.success) {
+                    alert('ยกเลิกออเดอร์เรียบร้อยแล้ว');
+                    fetchTableOrders(); // โหลดข้อมูลใหม่หลังจากยกเลิก
+                } else {
+                    alert(data.message || 'ไม่สามารถยกเลิกได้');
+                    btn.disabled = false;
+                    btn.innerHTML = originalText;
+                }
+            })
+            .catch(() => {
+                alert('เกิดข้อผิดพลาด กรุณาลองใหม่');
+                btn.disabled = false;
+                btn.innerHTML = originalText;
+            });
         }
 
         // เช็คว่ามีออเดอร์ไหม → แสดงปุ่ม
