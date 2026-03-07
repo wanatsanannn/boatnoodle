@@ -1,17 +1,17 @@
 /* === CSS สำหรับหน้าจอครัว (Tablet-First) === */
 
 :root {
-    --k-bg-main: #0f172a;
-    --k-bg-card: #1e293b;
-    --k-bg-header: #0f172a;
-    --k-bg-card-header: #334155;
-    --k-text-main: #f8fafc;
-    --k-text-muted: #94a3b8;
-    --k-border: #334155;
-    --k-primary: #ef4444;
+    --k-bg-main: #f4f6f9;
+    --k-bg-card: #ffffff;
+    --k-bg-header: #ffffff;
+    --k-bg-card-header: #f8f9fa;
+    --k-text-main: #2b2d42;
+    --k-text-muted: #6c757d;
+    --k-border: #e9ecef;
+    --k-primary: #e63946;
     --k-warning: #f59e0b;
     --k-success: #10b981;
-    --k-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.5), 0 2px 4px -1px rgba(0, 0, 0, 0.3);
+    --k-shadow: 0 2px 8px rgba(0, 0, 0, 0.08), 0 1px 3px rgba(0, 0, 0, 0.06);
     --k-radius: 12px;
 }
 
@@ -29,7 +29,7 @@
     justify-content: space-between;
     align-items: center;
     border-bottom: 3px solid var(--k-primary);
-    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3);
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.08);
     position: sticky;
     top: 0;
     z-index: 100;
@@ -50,10 +50,10 @@
     font-size: 1.4rem;
     font-weight: 600;
     color: var(--k-text-muted);
-    background: rgba(255, 255, 255, 0.05);
+    background: var(--k-bg-main);
     padding: 0.4rem 1rem;
     border-radius: 8px;
-    border: 1px solid rgba(255, 255, 255, 0.1);
+    border: 1px solid var(--k-border);
 }
 
 /* Order cards in kitchen */
@@ -73,11 +73,12 @@
     animation: slideIn .4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
     display: flex;
     flex-direction: column;
-    transition: transform 0.2s;
+    transition: transform 0.2s, box-shadow 0.2s;
 }
 
 .kitchen-card:hover {
     transform: translateY(-2px);
+    box-shadow: 0 4px 16px rgba(0, 0, 0, 0.12);
 }
 
 .kitchen-card.new-order {
@@ -100,15 +101,15 @@
 
 @keyframes pulse {
     0% {
-        box-shadow: 0 0 0 0 rgba(239, 68, 68, 0.4);
+        box-shadow: 0 0 0 0 rgba(230, 57, 70, 0.35);
     }
 
     70% {
-        box-shadow: 0 0 0 15px rgba(239, 68, 68, 0);
+        box-shadow: 0 0 0 15px rgba(230, 57, 70, 0);
     }
 
     100% {
-        box-shadow: 0 0 0 0 rgba(239, 68, 68, 0);
+        box-shadow: 0 0 0 0 rgba(230, 57, 70, 0);
     }
 }
 
@@ -118,13 +119,13 @@
     display: flex;
     justify-content: space-between;
     align-items: center;
-    border-bottom: 1px solid rgba(0, 0, 0, 0.2);
+    border-bottom: 1px solid var(--k-border);
 }
 
 .kitchen-card-header .table-num {
     font-size: 1.75rem;
     font-weight: 800;
-    color: #fff;
+    color: var(--k-text-main);
     display: flex;
     align-items: center;
     gap: 0.5rem;
@@ -144,8 +145,8 @@
 .kitchen-card-header .order-time {
     font-size: .95rem;
     font-weight: 600;
-    color: var(--k-warning);
-    background: rgba(245, 158, 11, 0.1);
+    color: #b45309;
+    background: rgba(245, 158, 11, 0.12);
     padding: 0.2rem 0.5rem;
     border-radius: 4px;
 }
@@ -180,7 +181,7 @@
     justify-content: center;
     margin-right: 1rem;
     flex-shrink: 0;
-    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
+    box-shadow: 0 2px 4px rgba(230, 57, 70, 0.25);
 }
 
 .kitchen-item .item-details-wrap {
@@ -205,17 +206,17 @@
     display: inline-block;
     margin-top: 0.4rem;
     padding: 0.3rem 0.6rem;
-    background: rgba(239, 68, 68, 0.15);
-    color: #fca5a5;
+    background: rgba(230, 57, 70, 0.08);
+    color: var(--k-primary);
     border-radius: 4px;
     font-size: 0.9rem;
     font-weight: 600;
-    border: 1px solid rgba(239, 68, 68, 0.3);
+    border: 1px solid rgba(230, 57, 70, 0.2);
 }
 
 .kitchen-card-footer {
     padding: 1rem 1.25rem;
-    background: rgba(0, 0, 0, 0.15);
+    background: var(--k-bg-card-header);
     border-top: 1px solid var(--k-border);
     display: flex;
     gap: 0.75rem;
@@ -288,6 +289,18 @@
     font-size: 5rem;
     display: block;
     margin-bottom: 1.5rem;
-    opacity: 0.5;
-    color: var(--k-border);
+    opacity: 0.4;
+    color: var(--k-text-muted);
+}
+
+/* ปุ่มออกจากระบบ — ปรับสีให้เข้ากับธีมขาว */
+.kitchen-header .btn-outline-light {
+    color: var(--k-text-muted);
+    border-color: var(--k-border);
+}
+
+.kitchen-header .btn-outline-light:hover {
+    color: #fff;
+    background-color: var(--k-primary);
+    border-color: var(--k-primary);
 }

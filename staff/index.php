@@ -18,8 +18,38 @@ require_once __DIR__ . '/../includes/header.php';
 </div>
 
 <?php $extraJS = '<script>
-let lastCount = 0;
-const sound = new Audio("data:audio/wav;base64,UklGRnoGAABXQVZFZm10IBAAAAABAAEAQB8AAEAfAAABAAgAZGF0YQoGAACBhYqFbF1fdH2Hkot9bml0fYeRi3pqaHV+h5KKe2xqdn+IkYl6bGl2f4iSiXpsaXZ/iJKJe2xpdn6Hk4l7bGl2f4iTiXtranV+iJOJe2xqdn6Ik4l7bGp1foiTintranV+iJOJe2xqdX6Ik4p7bGl2foiTintranV+iJOKe2xqdX4=");
+let knownOrderIds = new Set();
+let isFirstLoad = true;
+
+function playNotificationSound() {
+    try {
+        const audioCtx = new (window.AudioContext || window.webkitAudioContext)();
+        const notes = [1050, 1320, 1580]; // C6, E6, G6
+        const noteDuration = 0.15;
+        const noteGap = 0.12;
+
+        notes.forEach((freq, i) => {
+            const startTime = audioCtx.currentTime + i * (noteDuration + noteGap);
+            const osc = audioCtx.createOscillator();
+            osc.type = "sine";
+            osc.frequency.setValueAtTime(freq, startTime);
+
+            const gainNode = audioCtx.createGain();
+            gainNode.gain.setValueAtTime(0, startTime);
+            gainNode.gain.linearRampToValueAtTime(0.5, startTime + 0.02);
+            gainNode.gain.exponentialRampToValueAtTime(0.01, startTime + noteDuration + 0.15);
+
+            osc.connect(gainNode);
+            gainNode.connect(audioCtx.destination);
+            osc.start(startTime);
+            osc.stop(startTime + noteDuration + 0.2);
+        });
+
+        setTimeout(() => audioCtx.close(), 2000);
+    } catch (e) {
+        console.warn("ไม่สามารถเล่นเสียงแจ้งเตือนได้:", e);
+    }
+}
 
 function fetchReady() {
     fetch("../api/orders.php?status=ready")
@@ -27,10 +57,23 @@ function fetchReady() {
         .then(data => {
             if (data.success) {
                 renderReady(data.orders);
-                if (data.orders.length > lastCount && lastCount > 0) {
-                    sound.play().catch(() => {});
+
+                const currentIds = new Set(data.orders.map(o => o.id));
+                let newOrderCount = 0;
+
+                if (!isFirstLoad) {
+                    currentIds.forEach(id => {
+                        if (!knownOrderIds.has(id)) {
+                            newOrderCount++;
+                        }
+                    });
+                    if (newOrderCount > 0) {
+                        playNotificationSound();
+                    }
                 }
-                lastCount = data.orders.length;
+
+                knownOrderIds = currentIds;
+                isFirstLoad = false;
             }
         });
 }
