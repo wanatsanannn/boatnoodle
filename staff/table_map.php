@@ -344,7 +344,7 @@ function refreshTables() {
                             el.classList.add('status-available');
                             const tokenStr = t.session_token ? '&token=' + t.session_token : '';
                             const orderUrl = '<?= BASE_URL ?>/order/?table=' + encodeURIComponent(t.table_number) + tokenStr;
-                            const qrImageUrl = 'https://chart.googleapis.com/chart?chs=500x500&cht=qr&chl=' + encodeURIComponent(orderUrl);
+                            const qrImageUrl = 'https://api.qrserver.com/v1/create-qr-code/?size=300x300&data=' + encodeURIComponent(orderUrl);
                             overlay.innerHTML = `<button onclick="printQR('${t.table_number}', '${qrImageUrl}')" class="t-btn-act w-75">ดู QR โค้ด</button>`;
                         }
                     }
