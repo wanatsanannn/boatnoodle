@@ -18,6 +18,7 @@ require_once __DIR__ . '/../includes/header.php';
 </div>
 
 <?php $extraJS = '<script>
+<<<<<<< HEAD
 let knownOrderIds = new Set();
 let isFirstLoad = true;
 
@@ -55,6 +56,10 @@ function playNotificationSound() {
         console.error(e);
     }
 }
+=======
+let lastCount = 0;
+const sound = new Audio("data:audio/wav;base64,UklGRnoGAABXQVZFZm10IBAAAAABAAEAQB8AAEAfAAABAAgAZGF0YQoGAACBhYqFbF1fdH2Hkot9bml0fYeRi3pqaHV+h5KKe2xqdn+IkYl6bGl2f4iSiXpsaXZ/iJKJe2xpdn6Hk4l7bGl2f4iTiXtranV+iJOJe2xqdn6Ik4l7bGp1foiTintranV+iJOJe2xqdX6Ik4p7bGl2foiTintranV+iJOKe2xqdX4=");
+>>>>>>> 3de3ad1269bda8bc2ef5bfd0d54b33fd401fb403
 
 function fetchReady() {
     fetch("../api/orders.php?status=ready")
@@ -62,6 +67,7 @@ function fetchReady() {
         .then(data => {
             if (data.success) {
                 renderReady(data.orders);
+<<<<<<< HEAD
                 let currentIds = data.orders.map(o => o.id);
                 let hasNewOrder = false;
                 
@@ -79,6 +85,12 @@ function fetchReady() {
                 
                 knownOrderIds = new Set(currentIds);
                 isFirstLoad = false;
+=======
+                if (data.orders.length > lastCount && lastCount > 0) {
+                    sound.play().catch(() => {});
+                }
+                lastCount = data.orders.length;
+>>>>>>> 3de3ad1269bda8bc2ef5bfd0d54b33fd401fb403
             }
         });
 }
