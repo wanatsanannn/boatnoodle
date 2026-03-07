@@ -82,7 +82,13 @@ require_once __DIR__ . '/../includes/header.php';
                     <td><?= formatPrice($item['price_normal']) ?></td>
                     <td><?= $item['price_special'] ? formatPrice($item['price_special']) : '-' ?></td>
                     <td><?= $item['has_spice_option'] ? '<i class="bi bi-check-circle text-success"></i>' : '-' ?></td>
-                    <td><?= statusBadge($item['status']) ?></td>
+                    <td>
+                        <?php if ($item['status'] === 'available'): ?>
+                            <span class="badge bg-success">พร้อมขาย</span>
+                        <?php else: ?>
+                            <?= statusBadge($item['status']) ?>
+                        <?php endif; ?>
+                    </td>
                     <td>
                         <!-- ปุ่มเปลี่ยนสถานะ -->
                         <form method="POST" action="menu_action.php" class="d-inline">
