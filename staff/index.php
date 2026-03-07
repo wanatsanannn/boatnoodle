@@ -90,7 +90,6 @@ function fetchReady() {
                     sound.play().catch(() => {});
                 }
                 lastCount = data.orders.length;
->>>>>>> 3de3ad1269bda8bc2ef5bfd0d54b33fd401fb403
             }
         });
 }
