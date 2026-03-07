@@ -31,9 +31,9 @@ if ($user['role'] === 'chef') {
 <body>
     <nav class="navbar navbar-expand-lg navbar-dark bg-danger">
         <div class="container-fluid">
-            <a class="navbar-brand fw-bold" href="<?= $homeUrl ?>">
-                <img src="../assets/images/logo.png" alt="Logo" height="48" class="me-2">
-                <?= e(SITE_NAME) ?>
+            <a class="navbar-brand fw-bold d-flex align-items-center gap-2 fs-4" href="<?= $homeUrl ?>">
+                <img src="../assets/images/logo.png" alt="Logo" height="48">
+                <span><?= e(SITE_NAME) ?></span>
             </a>
             <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navMain">
                 <span class="navbar-toggler-icon"></span>
@@ -60,7 +60,7 @@ if ($user['role'] === 'chef') {
                         <li class="nav-item dropdown">
                             <a class="nav-link dropdown-toggle <?= in_array($currentPage, ['tables', 'table_map']) ? 'active' : '' ?>"
                                 href="#" data-bs-toggle="dropdown">
-                                <i class="bi bi-grid-3x3"></i> จัดการโต๊ะ
+                                <i class="bi bi-grid-3x3"></i> โต๊ะ
                             </a>
                             <ul class="dropdown-menu">
                                 <li><a class="dropdown-item" href="../admin/tables.php">จัดการข้อมูลโต๊ะ</a></li>

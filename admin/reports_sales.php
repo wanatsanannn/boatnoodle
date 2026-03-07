@@ -72,21 +72,21 @@ require_once __DIR__ . '/../includes/header.php';
 <!-- สรุป -->
 <div class="row g-3 mb-4">
     <div class="col-md-4">
-        <div class="stat-card bg-success position-relative">
+        <div class="stat-card position-relative" style="background:linear-gradient(135deg, #1e8449 0%, #27ae60 50%, #2ecc71 100%); color: #fff;">
             <i class="bi bi-cash-stack"></i>
             <div class="stat-number"><?= formatPrice($summary['total']) ?></div>
             <div class="stat-label">ยอดขายรวม</div>
         </div>
     </div>
     <div class="col-md-4">
-        <div class="stat-card bg-info position-relative">
+        <div class="stat-card position-relative" style="background:linear-gradient(135deg, #1a5276 0%, #2980b9 50%, #3498db 100%); color: #fff;">
             <i class="bi bi-receipt"></i>
             <div class="stat-number"><?= $summary['count'] ?></div>
             <div class="stat-label">จำนวนบิล</div>
         </div>
     </div>
     <div class="col-md-4">
-        <div class="stat-card bg-warning position-relative">
+        <div class="stat-card position-relative" style="background:linear-gradient(135deg, #d35400 0%, #e67e22 50%, #f39c12 100%); color: #fff;">
             <i class="bi bi-calculator"></i>
             <div class="stat-number"><?= $summary['count'] > 0 ? formatPrice($summary['total'] / $summary['count']) : '฿0' ?></div>
             <div class="stat-label">เฉลี่ยต่อบิล</div>

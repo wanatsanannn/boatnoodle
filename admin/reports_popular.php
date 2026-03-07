@@ -27,7 +27,6 @@ $stmt = $pdo->prepare("
 $stmt->execute([$dateFrom, $dateTo, $limit]);
 $popular = $stmt->fetchAll();
 
-$extraJS = '<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>';
 require_once __DIR__ . '/../includes/header.php';
 ?>
 
@@ -58,15 +57,8 @@ require_once __DIR__ . '/../includes/header.php';
     </div>
 </div>
 
-<div class="row g-3">
-    <div class="col-lg-7">
-        <div class="card">
-            <div class="card-body">
-                <canvas id="popularChart" height="300"></canvas>
-            </div>
-        </div>
-    </div>
-    <div class="col-lg-5">
+<div class="row">
+    <div class="col-12">
         <div class="card">
             <div class="table-responsive">
                 <table class="table table-hover mb-0 align-middle">
@@ -104,33 +96,4 @@ require_once __DIR__ . '/../includes/header.php';
             </div>
         </div>
     </div>
-</div>
-
-<script>
-const ctx = document.getElementById('popularChart').getContext('2d');
-new Chart(ctx, {
-    type: 'bar',
-    data: {
-        labels: <?= json_encode(array_column($popular, 'name')) ?>,
-        datasets: [{
-            label: 'จำนวนที่ขายได้',
-            data: <?= json_encode(array_map('intval', array_column($popular, 'total_qty'))) ?>,
-            backgroundColor: [
-                '#e74c3c', '#f39c12', '#27ae60', '#3498db', '#9b59b6',
-                '#1abc9c', '#e67e22', '#2ecc71', '#e74c3c', '#34495e',
-                '#16a085', '#d35400', '#c0392b', '#2980b9', '#8e44ad',
-                '#27ae60', '#f1c40f', '#e74c3c', '#3498db', '#95a5a6'
-            ],
-            borderRadius: 4
-        }]
-    },
-    options: {
-        indexAxis: 'y',
-        responsive: true,
-        plugins: { legend: { display: false } },
-        scales: { x: { beginAtZero: true } }
-    }
-});
-</script>
-
 <?php require_once __DIR__ . '/../includes/footer.php'; ?>

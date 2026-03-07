@@ -20,7 +20,7 @@ require_once __DIR__ . '/../includes/header.php';
 ?>
 
 <div class="d-flex justify-content-between align-items-center mb-4">
-    <h4><i class="bi bi-grid-3x3"></i> จัดการโต๊ะ</h4>
+    <h4><i class="bi bi-grid-3x3"></i> จัดการข้อมูลโต๊ะ</h4>
 </div>
 
 <div class="row">

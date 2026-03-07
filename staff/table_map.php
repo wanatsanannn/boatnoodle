@@ -235,6 +235,36 @@ require_once __DIR__ . '/../includes/header.php';
 </div>
 
 <?php
+$assignedTables = [];
+foreach ($layoutLeft as $row) {
+    foreach ($row as $num) {
+        $assignedTables[] = (string)$num;
+    }
+}
+foreach ($layoutRight as $num) {
+    $assignedTables[] = (string)$num;
+}
+
+$unassignedTables = [];
+foreach ($tableMap as $tableNumber => $t) {
+    if (!in_array((string)$tableNumber, $assignedTables)) {
+        $unassignedTables[] = $tableNumber;
+    }
+}
+?>
+
+<?php if (!empty($unassignedTables)): ?>
+    <div class="bg-white p-4 rounded-3 shadow-sm mb-4">
+        <h5 class="mb-3 fw-bold text-secondary"><i class="bi bi-grid-3x3-gap-fill"></i> โต๊ะอื่นๆ (เพิ่มล่าสุด)</h5>
+        <div class="d-flex flex-wrap gap-3">
+            <?php foreach ($unassignedTables as $num): ?>
+                <?php renderMapTable($num, $tableMap, 't-normal'); ?>
+            <?php endforeach; ?>
+        </div>
+    </div>
+<?php endif; ?>
+
+<?php
 function renderMapTable($tableNumber, $tableMap, $cssClass) {
     if (!isset($tableMap[$tableNumber])) {
         // Fallback for tables that don't exist in DB yet

@@ -57,7 +57,7 @@ require_once __DIR__ . '/../includes/header.php';
                     <?php endif; ?>
 
                     <div class="mb-3">
-                        <label class="form-label">ชื่อกลุ่ม <span class="text-danger">*</span></label>
+                        <label class="form-label">หัวข้อตัวเลือก <span class="text-danger">*</span></label>
                         <input type="text" name="name" class="form-control" required
                                value="<?= e($editGroup['name'] ?? '') ?>"
                                placeholder="เช่น ชนิดเส้น, ท็อปปิ้งเพิ่ม">
