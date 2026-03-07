@@ -158,7 +158,7 @@ $orders = $stmt->fetchAll();
     </table>
 
     <div class="text-center">
-        <div>ขอบคุณที่ใช้บริการครับ/ค่ะ</div>
+        <div>ขอบคุณที่ใช้บริการ/Thank you</div>
     </div>
 
 </body>

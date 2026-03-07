@@ -243,6 +243,12 @@ body {
     margin-bottom: 0.5rem;
 }
 
+.chart-wrapper {
+    position: relative;
+    height: 350px;
+    width: 100%;
+}
+
 .form-control,
 .form-select {
     border-radius: var(--radius-sm);
@@ -259,6 +265,15 @@ body {
 
 /* Print QR */
 @media print {
+    * {
+        -webkit-print-color-adjust: exact !important;
+        print-color-adjust: exact !important;
+    }
+
+    @page {
+        size: A4;
+        margin: 1cm;
+    }
 
     .navbar,
     footer,
@@ -270,6 +285,64 @@ body {
         background: #fff;
     }
 
+    /* Sales Report Compression for 1 page */
+    .print-row .col-4 {
+        width: 33.33333333% !important;
+        flex: 0 0 33.33333333% !important;
+        max-width: 33.33333333% !important;
+    }
+
+    .print-row .col-7 {
+        width: 58.33333333% !important;
+        flex: 0 0 58.33333333% !important;
+        max-width: 58.33333333% !important;
+    }
+
+    .print-row .col-5 {
+        width: 41.66666667% !important;
+        flex: 0 0 41.66666667% !important;
+        max-width: 41.66666667% !important;
+    }
+
+    .stat-card {
+        padding: 1rem !important;
+    }
+
+    .stat-card .stat-number {
+        font-size: 1.5rem !important;
+    }
+
+    .stat-card i {
+        font-size: 2.5rem !important;
+        right: 1rem !important;
+    }
+
+    .card {
+        margin-bottom: 0.5rem !important;
+        box-shadow: none !important;
+        border: 1px solid #dee2e6 !important;
+    }
+
+    .card-body {
+        padding: 0.75rem !important;
+    }
+
+    /* Shrink the chart size */
+    .chart-wrapper {
+        position: relative;
+        height: 250px !important;
+        width: 100% !important;
+        overflow: hidden;
+    }
+
+    #salesChart {
+        height: 250px !important;
+        max-height: 250px !important;
+        width: 100% !important;
+        max-width: 100% !important;
+    }
+
+    /* Print QR specific */
     .qr-print {
         page-break-after: always;
         text-align: center;

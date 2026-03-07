@@ -30,9 +30,22 @@ $popular = $stmt->fetchAll();
 require_once __DIR__ . '/../includes/header.php';
 ?>
 
-<h4 class="mb-4"><i class="bi bi-trophy"></i> เมนูขายดี</h4>
+<div class="d-flex justify-content-between align-items-center mb-4 d-print-none">
+    <h4 class="mb-0"><i class="bi bi-trophy"></i> เมนูขายดี</h4>
+    <button type="button" class="btn btn-outline-dark bg-white" onclick="window.print()">
+        <i class="bi bi-printer"></i> พิมพ์รายงาน
+    </button>
+</div>
 
-<div class="card mb-4">
+<!-- ส่วนหัวสำหรับปริ้น -->
+<div class="d-none d-print-block text-center mb-4">
+    <h4>รายงานเมนูขายดี</h4>
+    <p class="mb-0 text-muted">
+        ประจำวันที่ <?= date('d/m/Y', strtotime($dateFrom)) ?> ถึง <?= date('d/m/Y', strtotime($dateTo)) ?>
+    </p>
+</div>
+
+<div class="card mb-4 d-print-none">
     <div class="card-body">
         <form method="GET" class="row g-3 align-items-end">
             <div class="col-auto">

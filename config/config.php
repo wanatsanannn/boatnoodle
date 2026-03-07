@@ -2,14 +2,17 @@
 // ค่าคงที่ของระบบ
 define('SITE_NAME', 'ก๋วยเตี๋ยวเรือชาม');
 
-// ตรวจสอบว่าเป็น Localhost หรือ Server จริง เพื่อกำหนด URL อัตโนมัติ
-$is_localhost = ($_SERVER['HTTP_HOST'] == 'localhost' || $_SERVER['HTTP_HOST'] == '127.0.0.1');
+$protocol = isset($_SERVER['HTTPS']) && $_SERVER['HTTPS'] === 'on' ? "https" : "http";
+$host = $_SERVER['HTTP_HOST'] ?? 'localhost';
+$request_uri = $_SERVER['REQUEST_URI'] ?? '';
 
-if ($is_localhost) {
-    define('BASE_URL', 'http://localhost/ก๋วยเตี๋ยวเรือชาม');
+// ตรวจสอบว่าระบบถูกรันอยู่ในโฟลเดอร์ /ก๋วยเตี๋ยวเรือชาม (เช่น ทดสอบใน XAMPP) หรือไม่
+if (strpos($request_uri, '/ก๋วยเตี๋ยวเรือชาม') !== false || php_sapi_name() === 'cli') {
+    // กำหนดให้ Fallback สำหรับ CLI เป็นแบบ Localhost ของ XAMPP
+    define('BASE_URL', $protocol . '://' . $host . '/ก๋วยเตี๋ยวเรือชาม');
 } else {
-    // โดเมนของ InfinityFree เช่น http://boatnoodle.infinityfreeapp.com
-    define('BASE_URL', 'http://' . $_SERVER['HTTP_HOST']);
+    // กรณีอัปโหลดขึ้นโฮสติ้งจริง (ไม่มีซับโฟลเดอร์)
+    define('BASE_URL', $protocol . '://' . $host);
 }
 
 // เส้นทางไฟล์
