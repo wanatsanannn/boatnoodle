@@ -24,6 +24,9 @@ $token = $_GET['token'] ?? '';
 
     <div class="shop-header" style="padding:1.25rem 1.1rem; border-radius: 0 0 16px 16px; box-shadow: 0 4px 12px rgba(230,57,70,0.15);">
         <div style="display:flex;align-items:center;justify-content:center;position:relative;margin-bottom:0.8rem;">
+            <a href="index.php?table=<?= e($tableNumber) ?>&token=<?= e($token) ?>" style="position:absolute; left:0; color:#fff; font-size:1.5rem; text-decoration:none; display:flex; align-items:center;">
+                <i class="bi bi-house-door-fill"></i>
+            </a>
             <h1 style="font-size:1.5rem;font-weight:700;margin:0;color:#fff;line-height:1.5rem;"><?= SITE_NAME ?></h1>
         </div>
         <div>
