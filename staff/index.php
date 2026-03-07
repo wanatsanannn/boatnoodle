@@ -23,31 +23,36 @@ let isFirstLoad = true;
 
 function playNotificationSound() {
     try {
-        const audioCtx = new (window.AudioContext || window.webkitAudioContext)();
-        const notes = [1050, 1320, 1580]; // C6, E6, G6
-        const noteDuration = 0.15;
-        const noteGap = 0.12;
-
-        notes.forEach((freq, i) => {
-            const startTime = audioCtx.currentTime + i * (noteDuration + noteGap);
-            const osc = audioCtx.createOscillator();
-            osc.type = "sine";
-            osc.frequency.setValueAtTime(freq, startTime);
-
-            const gainNode = audioCtx.createGain();
-            gainNode.gain.setValueAtTime(0, startTime);
-            gainNode.gain.linearRampToValueAtTime(0.5, startTime + 0.02);
-            gainNode.gain.exponentialRampToValueAtTime(0.01, startTime + noteDuration + 0.15);
-
-            osc.connect(gainNode);
-            gainNode.connect(audioCtx.destination);
-            osc.start(startTime);
-            osc.stop(startTime + noteDuration + 0.2);
-        });
-
-        setTimeout(() => audioCtx.close(), 2000);
-    } catch (e) {
-        console.warn("ไม่สามารถเล่นเสียงแจ้งเตือนได้:", e);
+        const AudioContext = window.AudioContext || window.webkitAudioContext;
+        if (!AudioContext) return;
+        const ctx = new AudioContext();
+        
+        const osc1 = ctx.createOscillator();
+        const gain1 = ctx.createGain();
+        osc1.type = "sine";
+        osc1.frequency.setValueAtTime(880, ctx.currentTime); 
+        osc1.frequency.exponentialRampToValueAtTime(440, ctx.currentTime + 0.3);
+        gain1.gain.setValueAtTime(1, ctx.currentTime);
+        gain1.gain.exponentialRampToValueAtTime(0.01, ctx.currentTime + 0.3);
+        osc1.connect(gain1);
+        gain1.connect(ctx.destination);
+        osc1.start(ctx.currentTime);
+        osc1.stop(ctx.currentTime + 0.3);
+        
+        const osc2 = ctx.createOscillator();
+        const gain2 = ctx.createGain();
+        osc2.type = "sine";
+        osc2.frequency.setValueAtTime(1320, ctx.currentTime + 0.1);
+        osc2.frequency.exponentialRampToValueAtTime(880, ctx.currentTime + 0.4); 
+        gain2.gain.setValueAtTime(0, ctx.currentTime);
+        gain2.gain.setValueAtTime(0.8, ctx.currentTime + 0.1);
+        gain2.gain.exponentialRampToValueAtTime(0.01, ctx.currentTime + 0.4);
+        osc2.connect(gain2);
+        gain2.connect(ctx.destination);
+        osc2.start(ctx.currentTime + 0.1);
+        osc2.stop(ctx.currentTime + 0.4);
+    } catch(e) {
+        console.error(e);
     }
 }
 
@@ -57,22 +62,22 @@ function fetchReady() {
         .then(data => {
             if (data.success) {
                 renderReady(data.orders);
-
-                const currentIds = new Set(data.orders.map(o => o.id));
-                let newOrderCount = 0;
-
+                let currentIds = data.orders.map(o => o.id);
+                let hasNewOrder = false;
+                
                 if (!isFirstLoad) {
-                    currentIds.forEach(id => {
+                    for (let id of currentIds) {
                         if (!knownOrderIds.has(id)) {
-                            newOrderCount++;
+                            hasNewOrder = true;
+                            break;
                         }
-                    });
-                    if (newOrderCount > 0) {
+                    }
+                    if (hasNewOrder) {
                         playNotificationSound();
                     }
                 }
-
-                knownOrderIds = currentIds;
+                
+                knownOrderIds = new Set(currentIds);
                 isFirstLoad = false;
             }
         });

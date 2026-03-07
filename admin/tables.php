@@ -98,14 +98,6 @@ require_once __DIR__ . '/../includes/header.php';
                                 <a href="tables.php?edit=<?= $t['id'] ?>" class="btn btn-sm btn-outline-primary btn-action" title="แก้ไขโต๊ะ">
                                     <i class="bi bi-pencil"></i>
                                 </a>
-                                <form method="POST" action="table_action.php" class="d-inline" onsubmit="return confirm('ยืนยันระบบใหม่จะล้างคิวอาร์เดิมทิ้งทันที?');">
-                                    <?= csrfField() ?>
-                                    <input type="hidden" name="action" value="reset_token">
-                                    <input type="hidden" name="id" value="<?= $t['id'] ?>">
-                                    <button type="submit" class="btn btn-sm btn-outline-warning btn-action" title="สร้างคิวอาร์ใหม่">
-                                        <i class="bi bi-arrow-repeat"></i>
-                                    </button>
-                                </form>
                                 <form method="POST" action="table_action.php" class="d-inline" onsubmit="return confirm('แน่ใจที่จะลบโต๊ะนี้ใช่ไหม?');">
                                     <?= csrfField() ?>
                                     <input type="hidden" name="action" value="delete">

@@ -1,12 +1,9 @@
 // === JS สำหรับหน้าจอครัว ===
 
-let lastOrderCount = 0;
-let notificationSound = null;
+let knownOrderIds = new Set();
+let isFirstLoad = true;
 
 document.addEventListener('DOMContentLoaded', function () {
-    // สร้าง audio สำหรับแจ้งเตือน
-    notificationSound = new Audio('data:audio/wav;base64,UklGRnoGAABXQVZFZm10IBAAAAABAAEAQB8AAEAfAAABAAgAZGF0YQoGAACBhYqFbF1fdH2Hkot9bml0fYeRi3pqaHV+h5KKe2xqdn+IkYl6bGl2f4iSiXpsaXZ/iJKJe2xpdn6Hk4l7bGl2f4iTiXtranV+iJOJe2xqdn6Ik4l7bGp1foiTintranV+iJOJe2xqdX6Ik4p7bGl2foiTintranV+iJOKe2xqdX6Ik4p7bGp1foeTintranV+h5OKe2xpdX6Hk4p7bGp2foeTi3tsanV+h5OKe2xqdX6Hk4p7bGl1foeUi3tsanZ/h5OKe2xqdX6Hk4t7bGp2f4eTintranV+h5OLe2xqdn6Hk4p7bGp1foeTi3tsanZ+h5OKe2xqdX6HlIt7bGp2f4eTintranV+h5OLe2xqdn+Hk4p7bGp1foeTi3tsanZ+h5OKe2xpdX6HlIt7bGp2foeTintranV+h5OLe2xqdn6Hk4p7bGp1foeTi3tsanZ+h5OKe2xqdX6HlIt7bGp2foeTintranV+h5OKfGxqdn6Hk4p8bGp1foeTi3xsanV+h5OKfGxqdX6Hk4t8bGp1foeTinxsanV+h5OLfGxqdX6Hk4p8bGp1foeTi3xsanV+h5SKfGxqdn6Hk4p8bGp1foeTi3xsanZ+h5SKfGxqdX6Hk4t8bGp2f4eTinxsanV+h5OLfGxqdn6HlIp8bGp2foeTi3xsanZ+h5OKfGxqdX6HlIt8bGp2foeTinxsanV+h5OLfGxqdn6Hk4p8bGp1foeTi3xsanZ+h5SKfGxqdX6Hk4t8bGp2foeTinxsanV+h5OLfGxqdn6HlIp8bGp1foeTi3xsanZ+h5SKfGxqdX6Hk4t8bGp2foeTinxsanV+h5OLfGxqdn+Hk4p8bGp1foeTi3xsanZ+h5SKfGxqdX6Hk4t8bGp2foiTinxsanV+h5OLfGxqdn6HlIp8bGp1foeTi3xsanZ+h5SKfGxqdX6Hk4t8bGp1foeTi3xsanZ+h5SKfGxqdX6Hk4t8bGp2foeTinxsanV+h5OLfGxqdn6HlIp8bGp1foeTi3xsanZ+h5SKfGxqdX6Hk4t8bGp2foeTinxsanV+h5OLfGxqdn6HlIp8bGp1foeTi3xsanZ+h5SKfGxqdX6Hk4t8bGp2f4eTinxsanV+h5OLfGxqdn6Hk4p8bGp1foeTi3xsanZ+h5SKfGxqdX6Hk4t8bGp2foeTinxsanV+h5OLfGxqdn+HlIp8bGp1foeTi3xsanZ+h5SKfGxqdX6Hk4t8bGp2foeTinxsanV+h5OLfGxqdn6HlIp8bGp1foeTi3xsanZ/h5SKfGxqdX6Hk4t8bGp2foeTinxsanV+h5OLfGxqdn6HlIp8bGp1foeTi3xsanZ+h5SKfGxqdX6Hk4t8bGp2f4eTinxsanV+h5OLfGxqdn6Hk4p8bGp1foeTi3xsanZ+h5SKfGxqdX4=');
-
     // เริ่ม polling
     updateClock();
     setInterval(updateClock, 1000);
@@ -28,11 +25,24 @@ function fetchOrders() {
         .then(data => {
             if (data.success) {
                 renderOrders(data.orders);
-                // เล่นเสียงถ้ามีออเดอร์ใหม่
-                if (data.orders.length > lastOrderCount && lastOrderCount > 0) {
-                    playNotification();
+
+                let currentIds = data.orders.map(o => o.id);
+                let hasNewOrder = false;
+
+                if (!isFirstLoad) {
+                    for (let id of currentIds) {
+                        if (!knownOrderIds.has(id)) {
+                            hasNewOrder = true;
+                            break;
+                        }
+                    }
+                    if (hasNewOrder) {
+                        playNotification();
+                    }
                 }
-                lastOrderCount = data.orders.length;
+
+                knownOrderIds = new Set(currentIds);
+                isFirstLoad = false;
             }
         })
         .catch(err => console.error('Fetch error:', err));
@@ -97,7 +107,36 @@ function updateOrder(orderId, status) {
 }
 
 function playNotification() {
-    if (notificationSound) {
-        notificationSound.play().catch(() => { });
+    try {
+        const AudioContext = window.AudioContext || window.webkitAudioContext;
+        if (!AudioContext) return;
+        const ctx = new AudioContext();
+
+        const osc1 = ctx.createOscillator();
+        const gain1 = ctx.createGain();
+        osc1.type = 'sine';
+        osc1.frequency.setValueAtTime(880, ctx.currentTime);
+        osc1.frequency.exponentialRampToValueAtTime(440, ctx.currentTime + 0.3);
+        gain1.gain.setValueAtTime(1, ctx.currentTime);
+        gain1.gain.exponentialRampToValueAtTime(0.01, ctx.currentTime + 0.3);
+        osc1.connect(gain1);
+        gain1.connect(ctx.destination);
+        osc1.start(ctx.currentTime);
+        osc1.stop(ctx.currentTime + 0.3);
+
+        const osc2 = ctx.createOscillator();
+        const gain2 = ctx.createGain();
+        osc2.type = 'sine';
+        osc2.frequency.setValueAtTime(1320, ctx.currentTime + 0.1);
+        osc2.frequency.exponentialRampToValueAtTime(880, ctx.currentTime + 0.4);
+        gain2.gain.setValueAtTime(0, ctx.currentTime);
+        gain2.gain.setValueAtTime(0.8, ctx.currentTime + 0.1);
+        gain2.gain.exponentialRampToValueAtTime(0.01, ctx.currentTime + 0.4);
+        osc2.connect(gain2);
+        gain2.connect(ctx.destination);
+        osc2.start(ctx.currentTime + 0.1);
+        osc2.stop(ctx.currentTime + 0.4);
+    } catch (e) {
+        console.error(e);
     }
 }
