@@ -18,48 +18,8 @@ require_once __DIR__ . '/../includes/header.php';
 </div>
 
 <?php $extraJS = '<script>
-<<<<<<< HEAD
-let knownOrderIds = new Set();
-let isFirstLoad = true;
-
-function playNotificationSound() {
-    try {
-        const AudioContext = window.AudioContext || window.webkitAudioContext;
-        if (!AudioContext) return;
-        const ctx = new AudioContext();
-        
-        const osc1 = ctx.createOscillator();
-        const gain1 = ctx.createGain();
-        osc1.type = "sine";
-        osc1.frequency.setValueAtTime(880, ctx.currentTime); 
-        osc1.frequency.exponentialRampToValueAtTime(440, ctx.currentTime + 0.3);
-        gain1.gain.setValueAtTime(1, ctx.currentTime);
-        gain1.gain.exponentialRampToValueAtTime(0.01, ctx.currentTime + 0.3);
-        osc1.connect(gain1);
-        gain1.connect(ctx.destination);
-        osc1.start(ctx.currentTime);
-        osc1.stop(ctx.currentTime + 0.3);
-        
-        const osc2 = ctx.createOscillator();
-        const gain2 = ctx.createGain();
-        osc2.type = "sine";
-        osc2.frequency.setValueAtTime(1320, ctx.currentTime + 0.1);
-        osc2.frequency.exponentialRampToValueAtTime(880, ctx.currentTime + 0.4); 
-        gain2.gain.setValueAtTime(0, ctx.currentTime);
-        gain2.gain.setValueAtTime(0.8, ctx.currentTime + 0.1);
-        gain2.gain.exponentialRampToValueAtTime(0.01, ctx.currentTime + 0.4);
-        osc2.connect(gain2);
-        gain2.connect(ctx.destination);
-        osc2.start(ctx.currentTime + 0.1);
-        osc2.stop(ctx.currentTime + 0.4);
-    } catch(e) {
-        console.error(e);
-    }
-}
-=======
 let lastCount = 0;
 const sound = new Audio("data:audio/wav;base64,UklGRnoGAABXQVZFZm10IBAAAAABAAEAQB8AAEAfAAABAAgAZGF0YQoGAACBhYqFbF1fdH2Hkot9bml0fYeRi3pqaHV+h5KKe2xqdn+IkYl6bGl2f4iSiXpsaXZ/iJKJe2xpdn6Hk4l7bGl2f4iTiXtranV+iJOJe2xqdn6Ik4l7bGp1foiTintranV+iJOJe2xqdX6Ik4p7bGl2foiTintranV+iJOKe2xqdX4=");
->>>>>>> 3de3ad1269bda8bc2ef5bfd0d54b33fd401fb403
 
 function fetchReady() {
     fetch("../api/orders.php?status=ready")
@@ -67,30 +27,10 @@ function fetchReady() {
         .then(data => {
             if (data.success) {
                 renderReady(data.orders);
-<<<<<<< HEAD
-                let currentIds = data.orders.map(o => o.id);
-                let hasNewOrder = false;
-                
-                if (!isFirstLoad) {
-                    for (let id of currentIds) {
-                        if (!knownOrderIds.has(id)) {
-                            hasNewOrder = true;
-                            break;
-                        }
-                    }
-                    if (hasNewOrder) {
-                        playNotificationSound();
-                    }
-                }
-                
-                knownOrderIds = new Set(currentIds);
-                isFirstLoad = false;
-=======
                 if (data.orders.length > lastCount && lastCount > 0) {
                     sound.play().catch(() => {});
                 }
                 lastCount = data.orders.length;
->>>>>>> 3de3ad1269bda8bc2ef5bfd0d54b33fd401fb403
             }
         });
 }
