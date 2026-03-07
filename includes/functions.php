@@ -109,9 +109,9 @@ function statusBadge($status) {
     ];
     $color = $map[$status] ?? 'secondary';
     $labels = array_merge(ORDER_STATUSES, [
-        'available' => 'พร้อมขาย',
+        'available' => 'ว่าง',
         'sold_out'  => 'ของหมด',
-        'occupied'  => 'มีลูกค้า',
+        'occupied'  => 'ไม่ว่าง',
         'active'    => 'ใช้งาน',
         'inactive'  => 'ปิดใช้งาน',
     ]);
