@@ -120,14 +120,14 @@ if ($user['role'] === 'chef') {
                                 <i class="bi bi-cash-stack"></i> ชำระเงิน
                             </a>
                         </li>
-                        <li class="nav-item">
+                        <li class="nav-item ">
                             <a class="nav-link <?= $currentPage === 'receipts' ? 'active' : '' ?>" href="../staff/receipts.php">
                                 <i class="bi bi-receipt-cutoff"></i> ประวัติใบเสร็จ
                             </a>
                         </li>
                     <?php endif; ?>
                 </ul>
-                <div class="navbar-nav">
+                <div class="navbar-nav ">
                     <span class="nav-link text-light">
                         <i class="bi bi-person-circle"></i> <?= e($user['fullname']) ?>
                         <small class="opacity-75">(<?= e(ROLE_NAMES[$user['role']] ?? $user['role']) ?>)</small>
