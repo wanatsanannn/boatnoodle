@@ -141,6 +141,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             margin-top: 1rem;
             transition: all 0.3s;
             box-shadow: 0 4px 12px rgba(230, 57, 70, 0.3);
+            color: rgb(255, 255, 255);
         }
 
         .btn-login:hover {
