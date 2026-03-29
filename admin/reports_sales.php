@@ -55,12 +55,190 @@ require_once __DIR__ . '/../includes/header.php';
     </button>
 </div>
 
-<!-- ส่วนหัวสำหรับปริ้น -->
-<div class="d-none d-print-block text-center mb-4">
-    <h4>รายงานยอดขาย</h4>
-    <p class="mb-0 text-muted">
-        ประจำวันที่ <?= date('d/m/Y', strtotime($dateFrom)) ?> ถึง <?= date('d/m/Y', strtotime($dateTo)) ?>
-    </p>
+<!-- รูปแบบการพิมพ์ (Print Layout) -->
+<style>
+@media print {
+    .print-report * { 
+        color: #000 !important; 
+        font-family: 'Sarabun', sans-serif !important;
+    }
+    .print-report { 
+        padding: 20px 40px !important; 
+        font-size: 14px !important; 
+        line-height: 1.6 !important; 
+    }
+    .print-header { 
+        text-align: center; 
+        padding-bottom: 15px; 
+        margin-bottom: 20px; 
+        border-bottom: 2px solid #000; 
+    }
+    .print-header h2 { 
+        font-size: 22px; 
+        font-weight: 800; 
+        margin: 0 0 2px; 
+        letter-spacing: 1px; 
+    }
+    .print-header p { 
+        margin: 0; 
+        font-size: 13px; 
+    }
+    .print-section { 
+        margin-bottom: 22px; 
+    }
+    .print-section-title { 
+        font-size: 14px; 
+        font-weight: 700; 
+        margin: 0 0 10px; 
+        padding-bottom: 5px; 
+        border-bottom: 1px solid #555; 
+        letter-spacing: 0.5px;
+    }
+    .print-row { 
+        display: flex !important; 
+        justify-content: space-between; 
+        padding: 4px 0; 
+        font-size: 13px; 
+    }
+    .print-row.alt { 
+        background: #f5f5f5 !important; 
+        -webkit-print-color-adjust: exact !important; 
+        print-color-adjust: exact !important;
+        padding: 4px 8px;
+    }
+    .print-row .label { flex: 1; }
+    .print-row .value { 
+        text-align: right; 
+        font-weight: 600; 
+        min-width: 120px; 
+    }
+    .print-row .count { 
+        text-align: center; 
+        min-width: 80px; 
+    }
+    .print-total-row {
+        display: flex !important;
+        justify-content: space-between;
+        padding: 8px 0;
+        margin-top: 5px;
+        border-top: 1px solid #555;
+        border-bottom: 2px solid #000;
+        font-size: 15px;
+        font-weight: 700;
+    }
+    .print-footer { 
+        margin-top: 50px; 
+        display: flex !important; 
+        justify-content: space-between; 
+    }
+    .print-footer-left { font-size: 12px; }
+    .print-footer-left p { margin: 0; }
+    .print-signature { 
+        text-align: center; 
+        font-size: 12px; 
+    }
+    .print-signature .sign-line { 
+        display: inline-block; 
+        width: 180px; 
+        border-bottom: 1px dotted #000; 
+        margin-bottom: 3px; 
+        height: 30px; 
+    }
+    .print-signature p { margin: 0; }
+    .print-doc-id {
+        text-align: right;
+        font-size: 11px;
+        margin-bottom: 15px;
+    }
+}
+</style>
+
+<div class="d-none d-print-block print-report">
+
+    <div class="print-doc-id">
+        เลขที่เอกสาร: RPT-<?= date('Ymd-His') ?>
+    </div>
+
+    <div class="print-header">
+        <h2>ร้านก๋วยเตี๋ยวเรือชาม</h2>
+        <p style="font-size: 15px !important; font-weight: 600; margin-top: 3px !important;">รายงานสรุปยอดขาย</p>
+        <p>ประจำวันที่ <?= date('d/m/Y', strtotime($dateFrom)) ?> ถึง <?= date('d/m/Y', strtotime($dateTo)) ?></p>
+    </div>
+
+    <!-- สรุปยอดขาย -->
+    <div class="print-section">
+        <div class="print-section-title">สรุปภาพรวม</div>
+        <div class="print-row">
+            <span class="label">ยอดขายรวมทั้งหมด</span>
+            <span class="value" style="font-size: 16px !important;"><?= formatPrice($summary['total']) ?></span>
+        </div>
+        <div class="print-row">
+            <span class="label">จำนวนบิลทั้งหมด</span>
+            <span class="value"><?= $summary['count'] ?> บิล</span>
+        </div>
+        <div class="print-row">
+            <span class="label">ยอดเฉลี่ยต่อบิล</span>
+            <span class="value"><?= $summary['count'] > 0 ? formatPrice($summary['total'] / $summary['count']) : '฿0' ?></span>
+        </div>
+    </div>
+
+    <!-- แยกตามวิธีชำระ -->
+    <div class="print-section">
+        <div class="print-section-title">แยกตามวิธีชำระเงิน</div>
+        <div class="print-row" style="font-weight: 700; font-size: 12px !important; color: #555 !important; margin-bottom: 4px;">
+            <span class="label">วิธีชำระ</span>
+            <span class="count">จำนวนบิล</span>
+            <span class="value">ยอดเงิน</span>
+        </div>
+        <?php foreach ($byMethod as $i => $m): ?>
+        <div class="print-row <?= $i % 2 === 0 ? 'alt' : '' ?>">
+            <span class="label"><?= $m['method'] === 'cash' ? 'เงินสด' : 'PromptPay' ?></span>
+            <span class="count"><?= $m['count'] ?></span>
+            <span class="value"><?= formatPrice($m['total']) ?></span>
+        </div>
+        <?php endforeach; ?>
+        <?php if (empty($byMethod)): ?>
+        <div class="print-row"><span class="label">— ไม่มีข้อมูล —</span></div>
+        <?php endif; ?>
+    </div>
+
+    <!-- รายละเอียดรายวัน -->
+    <div class="print-section">
+        <div class="print-section-title">รายละเอียดยอดขายรายวัน</div>
+        <div class="print-row" style="font-weight: 700; font-size: 12px !important; color: #555 !important; margin-bottom: 4px;">
+            <span class="label">วันที่</span>
+            <span class="count">จำนวนบิล</span>
+            <span class="value">ยอดขาย</span>
+        </div>
+        <?php foreach ($dailySales as $i => $day): ?>
+        <div class="print-row <?= $i % 2 === 0 ? 'alt' : '' ?>">
+            <span class="label"><?= date('d/m/Y', strtotime($day['sale_date'])) ?></span>
+            <span class="count"><?= $day['daily_count'] ?></span>
+            <span class="value"><?= formatPrice($day['daily_total']) ?></span>
+        </div>
+        <?php endforeach; ?>
+        <?php if (empty($dailySales)): ?>
+        <div class="print-row"><span class="label">— ไม่มีข้อมูล —</span></div>
+        <?php endif; ?>
+        <div class="print-total-row">
+            <span class="label">รวมทั้งหมด</span>
+            <span class="count"><?= $summary['count'] ?> บิล</span>
+            <span class="value"><?= formatPrice($summary['total']) ?></span>
+        </div>
+    </div>
+
+    <!-- ส่วนท้าย -->
+    <div class="print-footer">
+        <div class="print-footer-left">
+            <p>ผู้จัดทำรายงาน: <?= e(currentUser()['fullname'] ?? 'ผู้ดูแลระบบ') ?></p>
+            <p>วันที่พิมพ์: <?= date('d/m/Y H:i') ?> น.</p>
+        </div>
+        <div class="print-signature">
+            <div class="sign-line"></div>
+            <p>ผู้ตรวจสอบ / ผู้จัดการ</p>
+        </div>
+    </div>
+
 </div>
 
 <!-- เลือกช่วงวันที่ -->
@@ -83,7 +261,7 @@ require_once __DIR__ . '/../includes/header.php';
 </div>
 
 <!-- สรุป -->
-<div class="row g-3 mb-4 print-row">
+<div class="row g-3 mb-4 no-print">
     <div class="col-md-4 col-4">
         <div class="stat-card position-relative" style="background:linear-gradient(135deg, #1e8449 0%, #27ae60 50%, #2ecc71 100%); color: #fff;">
             <i class="bi bi-cash-stack"></i>
@@ -107,7 +285,7 @@ require_once __DIR__ . '/../includes/header.php';
     </div>
 </div>
 
-<div class="row g-3">
+<div class="row g-3 no-print">
     <!-- กราฟยอดขายรายวัน -->
     <div class="col-lg-8 col-12">
         <div class="card h-100 mb-0">

@@ -37,15 +37,123 @@ require_once __DIR__ . '/../includes/header.php';
     </button>
 </div>
 
-<!-- ส่วนหัวสำหรับปริ้น -->
-<div class="d-none d-print-block text-center mb-4">
-    <h4>รายงานเมนูขายดี</h4>
-    <p class="mb-0 text-muted">
-        ประจำวันที่ <?= date('d/m/Y', strtotime($dateFrom)) ?> ถึง <?= date('d/m/Y', strtotime($dateTo)) ?>
-    </p>
+<!-- รูปแบบการพิมพ์ แบบ POS มาตรฐาน -->
+<style>
+@media print {
+    .pop-print {
+        font-family: 'Sarabun', sans-serif !important;
+        color: #000 !important;
+        padding: 20px 40px !important;
+        font-size: 14px !important;
+        line-height: 1.5 !important;
+    }
+    .pop-print * { color: #000 !important; }
+
+    .pop-print .pr-head {
+        text-align: center;
+        margin-bottom: 20px;
+    }
+    .pop-print .pr-head h3 { margin: 0; font-size: 18px; font-weight: 800; }
+    .pop-print .pr-head p { margin: 3px 0 0; font-size: 13px; }
+
+    .pop-print .pr-row {
+        display: flex !important;
+        align-items: center;
+        padding: 7px 5px;
+        font-size: 13px;
+        border-bottom: 1px dotted #ccc;
+    }
+    .pop-print .pr-row.header {
+        font-weight: 700;
+        font-size: 12px;
+        border-bottom: 2px solid #000;
+        padding-bottom: 8px;
+        margin-bottom: 2px;
+    }
+    .pop-print .pr-row.alt {
+        background: #f5f5f5 !important;
+        -webkit-print-color-adjust: exact !important;
+        print-color-adjust: exact !important;
+    }
+    .pop-print .pr-row .c-no { width: 40px; text-align: center; }
+    .pop-print .pr-row .c-name { flex: 1; }
+    .pop-print .pr-row .c-cat { width: 100px; }
+    .pop-print .pr-row .c-qty { width: 80px; text-align: right; }
+    .pop-print .pr-row .c-rev { width: 100px; text-align: right; font-weight: 600; }
+
+    .pop-print .pr-row.total {
+        border-top: 2px solid #000;
+        border-bottom: none;
+        font-weight: 700;
+        font-size: 14px;
+        padding-top: 10px;
+        margin-top: 3px;
+    }
+
+    .pop-print .pr-foot {
+        margin-top: 25px;
+        font-size: 11px;
+        text-align: center;
+    }
+}
+</style>
+
+<div class="d-none d-print-block pop-print">
+
+    <div class="pr-head">
+        <h3>ร้านก๋วยเตี๋ยวเรือชาม</h3>
+        <p style="font-size:15px !important; font-weight:600;">รายงานเมนูขายดี Top <?= $limit ?></p>
+        <p>ประจำวันที่ <?= date('d/m/Y', strtotime($dateFrom)) ?> ถึง <?= date('d/m/Y', strtotime($dateTo)) ?></p>
+    </div>
+
+    <!-- หัวตาราง -->
+    <div class="pr-row header">
+        <span class="c-no">อันดับ</span>
+        <span class="c-name">ชื่อเมนู</span>
+        <span class="c-cat">หมวดหมู่</span>
+        <span class="c-qty">จำนวน</span>
+        <span class="c-rev">ยอดขาย</span>
+    </div>
+
+    <!-- ข้อมูล -->
+    <?php
+    $totalQty = 0;
+    $totalRevenue = 0;
+    foreach ($popular as $i => $p):
+        $totalQty += $p['total_qty'];
+        $totalRevenue += $p['total_revenue'];
+    ?>
+    <div class="pr-row <?= $i % 2 === 1 ? 'alt' : '' ?>">
+        <span class="c-no"><?= $i + 1 ?></span>
+        <span class="c-name"><?= e($p['name']) ?></span>
+        <span class="c-cat"><?= e($p['category_name']) ?></span>
+        <span class="c-qty"><?= number_format($p['total_qty']) ?> ชาม</span>
+        <span class="c-rev"><?= formatPrice($p['total_revenue']) ?></span>
+    </div>
+    <?php endforeach; ?>
+
+    <?php if (empty($popular)): ?>
+    <div class="pr-row"><span class="c-name" style="text-align:center; width:100%;">— ไม่มีข้อมูล —</span></div>
+    <?php endif; ?>
+
+    <!-- แถวรวม -->
+    <?php if (!empty($popular)): ?>
+    <div class="pr-row total">
+        <span class="c-no"></span>
+        <span class="c-name">รวมทั้งหมด</span>
+        <span class="c-cat"></span>
+        <span class="c-qty"><?= number_format($totalQty) ?> ชาม</span>
+        <span class="c-rev"><?= formatPrice($totalRevenue) ?></span>
+    </div>
+    <?php endif; ?>
+
+    <div class="pr-foot">
+        พิมพ์โดย <?= e(currentUser()['fullname'] ?? 'ผู้ดูแลระบบ') ?> | <?= date('d/m/Y H:i') ?>
+    </div>
+
 </div>
 
-<div class="card mb-4 d-print-none">
+<div class="card mb-4 no-print">
     <div class="card-body">
         <form method="GET" class="row g-3 align-items-end">
             <div class="col-auto">
@@ -70,7 +178,7 @@ require_once __DIR__ . '/../includes/header.php';
     </div>
 </div>
 
-<div class="row">
+<div class="row no-print">
     <div class="col-12">
         <div class="card">
             <div class="table-responsive">
